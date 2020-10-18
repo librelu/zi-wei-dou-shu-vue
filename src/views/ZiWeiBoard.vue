@@ -4,62 +4,79 @@
     v-model="valid"
     lazy-validation
   >
-    <v-menu
-      ref="menu"
-      v-model="menu"
-      :close-on-content-click="false"
-      transition="scale-transition"
-      offset-y
-      min-width="290px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          v-model="birthDate"
-          label="生日年月"
-          prepend-icon="mdi-calendar"
-          readonly
-          v-bind="attrs"
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-        ref="picker"
-        v-model="birthDate"
-        :max="new Date().toISOString().substr(0, 10)"
-        min="1920-01-01"
-        @change="save"
-      ></v-date-picker>
-    </v-menu>
-    <v-select
-      v-model="birthTime"
-      :items="birthTimes"
-      :rules="[v => !!v || '請選擇生時!']"
-      prepend-icon="mdi-calendar"
-      label="生時"
-      required
-    ></v-select>
-    <v-select
-      v-model="gender"
-      :items="genders"
-      :rules="[v => !!v || '請選擇生理性別!']"
-      prepend-icon="mdi-human-male-female"
-      label="生理性別"
-      required
-    ></v-select>
-     <v-btn
-      color="primary"
-      class="mr-4"
-      @click="submit"
-    >
-      開啟命盤
-    </v-btn>
-     <v-btn
-      color="error"
-      class="mr-4"
-      @click="reset"
-    >
-      清除
-    </v-btn>
+    <v-container>
+      <v-row justify="center">
+          <v-col cols="4">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="birthDate"
+                  label="生日年月"
+                  prepend-icon="mdi-calendar"
+                  :rules="[v => !!v || '請選擇生日年月!']"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                ref="picker"
+                v-model="birthDate"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1920-01-01"
+                @change="save"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="4">
+          <v-select
+            v-model="birthTime"
+            :items="birthTimes"
+            :rules="[v => !!v || '請選擇生時!']"
+            prepend-icon="mdi-calendar"
+            label="生時"
+            required
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col class="justify-center" cols=4>
+          <v-select
+            v-model="gender"
+            :items="genders"
+            :rules="[v => !!v || '請選擇生理性別!']"
+            prepend-icon="mdi-human-male-female"
+            label="生理性別"
+            required
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-btn
+          color="primary"
+          class="mr-4"
+          @click="submit"
+        >
+          開啟命盤
+        </v-btn>
+        <v-btn
+          color="error"
+          class="mr-4"
+          @click="reset"
+        >
+          清除
+        </v-btn>
+      </v-row>
+    </v-container>
   </v-form>
 </template>
 
@@ -91,8 +108,13 @@ export default {
     reset () {
       this.$refs.form.reset()
     },
-    submit(){
-      console.log("hello")
+    submit(){ 
+      this.$refs.form.validate()
+      let gender = this.gender
+      let birthDate = this.birthDate.split("-")
+      let date = new Date(birthDate[0],birthDate[1],birthDate[2], this.birthTime, 0 , 0 ,0)
+      //TODO: data is ready to fetch to backend
+      console.log(gender, date)
     },
     resetValidation () {
       this.$refs.form.resetValidation()
