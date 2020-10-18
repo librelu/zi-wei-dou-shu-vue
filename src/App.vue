@@ -1,11 +1,15 @@
 <template>
-  <div id="app">
-    <div id="nav">
+  <v-app>
+    <v-app-bar app>
       <router-link to="/">Home</router-link> |
       <router-link to="/ziweiboard">紫微命盤</router-link>
-    </div>
-    <router-view/>
-  </div>
+    </v-app-bar>
+    <v-main>
+      <v-container fluid>
+        <router-view/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <style lang="scss">
