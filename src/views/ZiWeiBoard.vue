@@ -112,9 +112,14 @@ export default {
       this.$refs.form.validate()
       let gender = this.gender
       let birthDate = this.birthDate.split("-")
-      let date = new Date(birthDate[0],birthDate[1],birthDate[2], this.birthTime, 0 , 0 ,0)
-      //TODO: data is ready to fetch to backend
-      console.log(gender, date)
+      let birthday = new Date(birthDate[0],birthDate[1],birthDate[2], this.birthTime, 0 , 0 ,0).getTime()/1000
+      this.axios.get('board', {params: {
+          gender,
+          birthday,
+      }}).then((resp)=>{
+          console.log(resp.data)
+          this.$router.push({name:"GetZiWeiBoard", params: {board: resp.data}})
+      })
     },
     resetValidation () {
       this.$refs.form.resetValidation()

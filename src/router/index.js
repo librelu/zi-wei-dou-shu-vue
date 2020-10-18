@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import ZiWeiBoard from '../views/ZiWeiBoard.vue'
+import GetZiWeiBoard from '../views/GetZiWeiBoard.vue'
 
 Vue.use(VueRouter)
 
@@ -12,11 +14,13 @@ const routes = [
   },
   {
     path: '/ziweiboard',
-    name: '紫微命盤',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ZiWeiBoard.vue')
+    name: 'ZiWeiBoard',
+    component: ZiWeiBoard
+  },
+  {
+    path: '/getziweiboard',
+    name: 'GetZiWeiBoard',
+    component: GetZiWeiBoard
   }
 ]
 
