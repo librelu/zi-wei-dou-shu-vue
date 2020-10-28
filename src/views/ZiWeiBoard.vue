@@ -6,7 +6,7 @@
   >
     <v-container>
       <v-row justify="center">
-          <v-col cols="4">
+          <v-col cols=12 md=4 lg=4>
             <v-menu
               ref="menu"
               v-model="menu"
@@ -37,7 +37,7 @@
           </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col cols="4">
+        <v-col cols="12" md="4" lg="4">
           <v-select
             v-model="birthTime"
             :items="birthTimes"
@@ -49,7 +49,7 @@
         </v-col>
       </v-row>
       <v-row justify="center">
-        <v-col class="justify-center" cols=4>
+        <v-col class="justify-center" cols=12 md=4>
           <v-select
             v-model="gender"
             :items="genders"
@@ -112,7 +112,8 @@ export default {
       this.$refs.form.validate()
       let gender = this.gender
       let birthDate = this.birthDate.split("-")
-      let birthday = new Date(birthDate[0],birthDate[1],birthDate[2], this.birthTime, 0 , 0 ,0).getTime()/1000
+      let birthday = new Date(Date.UTC(birthDate[0],birthDate[1] - 1,birthDate[2], this.birthTime, 0 , 0 ,0)).getTime()
+      birthday = birthday / 1000
       this.axios.get('board', {params: {
           gender,
           birthday,
