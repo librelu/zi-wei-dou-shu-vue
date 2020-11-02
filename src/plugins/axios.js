@@ -9,7 +9,7 @@ import axios from "axios";
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: process.env.baseURL || process.env.apiUrl || "http://54.254.229.151:8080/api/v1/",
+  baseURL: process.env.baseURL || process.env.apiUrl || "http://18.139.229.147:8080/api/v1/",
   timeout: 500, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };

@@ -118,7 +118,6 @@ export default {
           gender,
           birthday,
       }}).then((resp)=>{
-          console.log(resp.data)
           this.$router.push({name:"GetZiWeiBoard", params: {board: resp.data}})
       })
     },

@@ -7,6 +7,7 @@
                     :stars="blocks[5].Stars"
                     :gongWeiName="blocks[5].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 5"
+                    :tenYearsRound="blocks[5].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -15,6 +16,7 @@
                     :stars="blocks[6].Stars"
                     :gongWeiName="blocks[6].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 6"
+                    :tenYearsRound="blocks[6].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -23,6 +25,7 @@
                     :stars="blocks[7].Stars"
                     :gongWeiName="blocks[7].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 7"
+                    :tenYearsRound="blocks[7].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -31,6 +34,7 @@
                     :stars="blocks[8].Stars"
                     :gongWeiName="blocks[8].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 8"
+                    :tenYearsRound="blocks[8].TenYearsRound"
                 ></BlockCard>
             </v-col>
         </v-row>
@@ -41,6 +45,7 @@
                     :stars="blocks[4].Stars"
                     :gongWeiName="blocks[4].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 4"
+                    :tenYearsRound="blocks[4].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="6" class="text-caption profile-start blue-grey--text text--darken-1 " align-self="end">
@@ -54,6 +59,7 @@
                     :stars="blocks[9].Stars"
                     :gongWeiName="blocks[9].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 9"
+                    :tenYearsRound="blocks[9].TenYearsRound"
                 ></BlockCard>
             </v-col>
         </v-row>
@@ -64,6 +70,7 @@
                     :stars="blocks[3].Stars"
                     :gongWeiName="blocks[3].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 3"
+                    :tenYearsRound="blocks[3].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="6" class="text-caption profile-end blue-grey--text text--darken-1" align-self="start">
@@ -77,6 +84,7 @@
                     :stars="blocks[10].Stars"
                     :gongWeiName="blocks[10].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 10"
+                    :tenYearsRound="blocks[10].TenYearsRound"
                 ></BlockCard>
             </v-col>
         </v-row>
@@ -87,6 +95,7 @@
                     :stars="blocks[2].Stars"
                     :gongWeiName="blocks[2].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 2"
+                    :tenYearsRound="blocks[2].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -95,6 +104,7 @@
                     :stars="blocks[1].Stars"
                     :gongWeiName="blocks[1].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 1"
+                    :tenYearsRound="blocks[1].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -103,6 +113,7 @@
                     :stars="blocks[0].Stars"
                     :gongWeiName="blocks[0].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 0"
+                    :tenYearsRound="blocks[0].TenYearsRound"
                 ></BlockCard>
             </v-col>
             <v-col cols="3">
@@ -111,6 +122,7 @@
                     :stars="blocks[11].Stars"
                     :gongWeiName="blocks[11].GongWeiName"
                     :isShenGongLocation="board.ShenGongLocation === 11"
+                    :tenYearsRound="blocks[11].TenYearsRound"
                 ></BlockCard>
             </v-col>
         </v-row>

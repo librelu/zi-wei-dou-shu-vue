@@ -1,32 +1,38 @@
 <template>
     <div class="display-border star-main-block" no-gutters dense>
         <div class="stars-row align-start">
-            <v-spacer></v-spacer>
-            <div class="display-column text-md-body-1 text-sm-caption text-caption font-weight-bold">
-                <div>
-                    <template v-for="(star, idx) in sortStars(stars).mainStars">
-                        <div class="write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
+            <div class="display-column text-sm-caption smallest-text-size">
+                <div class="set-div-gutters">
+                    <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
+                        <div class="align-sm-center write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
                             {{star.Name}}
-                            <div class="miao-xian green--text text--lighten-1">{{star.MiaoXian}}</div>
-                        </div>
-                    </template>
-                </div>
-                <div>
-                    <template v-for="(star, idx) in sortStars(stars).fourStars">
-                        <div class="write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
-                            {{star.Name}}
-                            <div class="miao-xian green--text text--lighten-1">{{star.MiaoXian}}</div>
+                            <div class="align-sm-center miao-xian text-sm-caption font-weight-light green--text text--lighten-1">{{star.MiaoXian}}</div>
+                            <div class="align-sm-center four-start text-sm-caption font-weight-light deep-purple--text text--accent-2">{{star.FourStar}}</div>
                         </div>
                     </template>
                 </div>
             </div>
-            <div class="text-md-body-2 text-sm-caption smallest-text-size">
-                <template v-for="(star, idx) in sortStars(stars).attachedStars">
-                    <div class="write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
-                        {{star.Name}}
-                        <div class="miao-xian green--text text--lighten-1">{{star.MiaoXian}}</div>
-                    </div>
-                </template>
+            <div class="display-column text-md-body-1 text-sm-caption text-caption font-weight-bold">
+                <div class="set-div-gutters">
+                    <template v-for="(star, idx) in sortStars(stars).mainStars">
+                        <div class="align-sm-center write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
+                            {{star.Name}}
+                            <div class="align-sm-center miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1">{{star.MiaoXian}}</div>
+                            <div class="align-sm-center four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2">{{star.FourStar}}</div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="display-column text-sm-caption smallest-text-size">
+                <div class="set-div-gutters">
+                    <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
+                        <div class="align-sm-center write-vertical" :class="getFontStyle(star.StarType)" :key="idx">
+                            {{star.Name}}
+                            <div class="align-sm-center miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1">{{star.MiaoXian}}</div>
+                            <div class="align-sm-center four-start text-sm-caption font-weight-light deep-purple--text text--accent-2">{{star.FourStar}}</div>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
         <div class="stars-row align-end">
@@ -36,8 +42,13 @@
                         {{star.Name}}
                     </div>
                 </template>
-                <div class="smallest-text-size" v-if="isShenGongLocation">
-                     (身)
+            </div>
+            <div class="text-sm-caption smallest-text-size display-column">
+                <div class="text-sm-caption smallest-text-size display-center" v-if="isShenGongLocation">
+                     <span>(身)</span>
+                </div>
+                <div class="text-sm-caption smallest-text-size display-center">
+                     <span>{{tenYearsRound}}</span>
                 </div>
             </div>
             <div>
@@ -54,6 +65,14 @@
 </template>
 
 <style>
+.set-div-gutters{
+    width: 100%;
+    margin: 1px;
+}
+.display-center{
+    display: block !important;
+    text-align: center;
+}
 .display-column{
     flex-direction: column !important;
 }
@@ -68,6 +87,7 @@
     display:block;
     height:100%;
     padding: 5px;
+    min-height: 150px;
 }
 .stars-row{
     height: 50%;
@@ -88,7 +108,7 @@
 .display-border{
     border: solid 1px gray;
 }
-.miao-xian{
+.miao-xian ,.four-start{
     height: 10px;
     margin: 3px 0px;
 }
@@ -108,12 +128,16 @@ export default {
         },
         isShenGongLocation: {
             type: Boolean,
+        },
+        tenYearsRound:{
+            type: String,
         }
     },
     methods: {
         sortStars: (stars) => {
             let mainStars = []
-            let attachedStars = []
+            let rightAttachedStars = []
+            let leftAttachedStars = []
             let otherStars = []
             let fourStars = []
             stars.forEach((star)=>{
@@ -121,8 +145,11 @@ export default {
                 case "十四主星":
                     mainStars.push(star)
                     break
-                case "十四輔星":
-                    attachedStars.push(star)
+                case "右輔星":
+                    rightAttachedStars.push(star)
+                    break
+                case "左輔星":
+                    leftAttachedStars.push(star)
                     break
                 case "四化":
                     fourStars.push(star)
@@ -134,7 +161,8 @@ export default {
             })
             return {
                 mainStars,
-                attachedStars,
+                rightAttachedStars,
+                leftAttachedStars,
                 fourStars,
                 otherStars
             }
@@ -143,10 +171,10 @@ export default {
             switch(typeName) {
             case "十四主星":
                 return "red--text text--darken-1"
-            case "十四輔星":
+            case "右輔星":
                 return "indigo--text text--darken-1"
-            case "四化":
-                return "four-start deep-purple--text text--accent-2"
+            case "左輔星":
+                return "indigo--text text--darken-1"
             default:
                 return "blue-grey--text text--lighten-1"
             } 
