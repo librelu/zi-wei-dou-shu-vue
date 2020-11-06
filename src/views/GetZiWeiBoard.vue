@@ -1,5 +1,6 @@
 <template>
     <v-container class="star-board">
+        <BoardMenu></BoardMenu>
         <v-row dense no-gutters align="stretch">
             <v-col cols="3">
                 <BlockCard
@@ -140,9 +141,16 @@
 
 <script>
 import BlockCard from '@/components/BlockCard.vue'
+import BoardMenu from '@/components/BoardMenu.vue'
 export default {
+    beforeCreate(){
+        if (this.$store.getters.board.Blocks === undefined || this.$store.getters.board.Blocks === {}){
+                this.$router.push({name:"ZiWeiBoard"})
+        }
+    },
     components: {
-        BlockCard
+        BlockCard,
+        BoardMenu
     },
     data: () => {
         return {
@@ -151,10 +159,10 @@ export default {
     },
     computed: {
         board(){
-            return this.$router.currentRoute.params.board
+            return this.$store.getters.board
         },
         blocks() {
-            return this.$router.currentRoute.params.board.Blocks
+            return this.$store.getters.board.Blocks
         }
     }
 }

@@ -118,7 +118,17 @@ export default {
           gender,
           birthday,
       }}).then((resp)=>{
-          this.$router.push({name:"GetZiWeiBoard", params: {board: resp.data}})
+          let board = resp.data
+          this.$store.dispatch({
+            type: 'setBoardInfo',
+            currentUser: {
+              gender,
+              birthday,
+              board,
+            } 
+          }).then(()=>{
+            this.$router.push({name:"GetZiWeiBoard"})
+          })
       })
     },
     resetValidation () {
