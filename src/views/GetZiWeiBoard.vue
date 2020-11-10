@@ -1,6 +1,5 @@
 <template>
     <v-container class="star-board">
-        <BoardMenu></BoardMenu>
         <v-row dense no-gutters align="stretch">
             <v-col cols="3">
                 <BlockCard
@@ -50,6 +49,8 @@
                 ></BlockCard>
             </v-col>
             <v-col cols="6" class="text-caption profile-start blue-grey--text text--darken-1 " align-self="end">
+                <v-col><BoardMenu></BoardMenu></v-col>
+                <v-col class="pannel-min-height" ><YearBoardIndexPanel v-if="isYearBoard"></YearBoardIndexPanel></v-col>
                 <p><label>生日：</label>{{board.BirthDay}}</p>
                 <p><label>農曆生日：</label>{{board.LunaBirthDay}}</p>
                 <p><label>姓別：</label>{{board.Gender}}</p>
@@ -137,11 +138,16 @@
 .profile-end p{ 
     margin: 0px;
 }
+.pannel-min-height{
+    min-height: 60px;
+}
 </style>
 
 <script>
 import BlockCard from '@/components/BlockCard.vue'
 import BoardMenu from '@/components/BoardMenu.vue'
+import BoardType from '@/enum/boardType'
+import YearBoardIndexPanel from '@/components/YearBoardIndexPanel.vue'
 export default {
     beforeCreate(){
         if (this.$store.getters.board.Blocks === undefined || this.$store.getters.board.Blocks === {}){
@@ -150,7 +156,8 @@ export default {
     },
     components: {
         BlockCard,
-        BoardMenu
+        BoardMenu,
+        YearBoardIndexPanel
     },
     data: () => {
         return {
@@ -158,6 +165,9 @@ export default {
         }
     },
     computed: {
+        isYearBoard(){
+            return this.$store.getters.boardType === BoardType.yearBoard
+        },
         board(){
             return this.$store.getters.board
         },

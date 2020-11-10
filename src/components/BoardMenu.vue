@@ -12,8 +12,8 @@
             </v-btn>
             </template>
             <v-list>
-                 <v-list-item-group
-                    v-model="selectedItem"
+                <v-list-item-group
+                    v-model="boardTypeIndex"
                     color="primary">
                         <v-list-item
                             v-for="(type, index) in boardTypes"
@@ -21,7 +21,7 @@
                         >
                             <v-list-item-title>{{ type.title }}</v-list-item-title>
                         </v-list-item>
-                 </v-list-item-group>
+                </v-list-item-group>
             </v-list>
         </v-menu>
     </div>
@@ -31,7 +31,7 @@
 export default {
     data: ()=>{
         return {
-            selectedItem: 0,
+            boardTypeIndex: 0,
             boardTypes : [
                 { title: '天盤' },
                 { title: '流年' },
@@ -40,9 +40,29 @@ export default {
             ],
         }
     },
+    watch: {
+        boardTypeIndex(){
+            switch(this.boardTypeIndex){
+                case 0:
+                    this.$store.dispatch('setOriginBoard')
+                    break
+                case 1:
+                    this.$store.dispatch('setYearBoard', {
+                        gender: this.$store.getters.gender,
+                        birthday: this.$store.getters.birthday,
+                        index: 1,
+                    })
+                    break
+                case 2:
+                    break
+                case 3:
+                    break
+            }
+        }
+    },
     computed: {
         boardName(){
-            return this.boardTypes[this.selectedItem].title
+            return this.boardTypes[this.boardTypeIndex].title
         },
     }
 }

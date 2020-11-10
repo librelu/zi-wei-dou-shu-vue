@@ -114,21 +114,11 @@ export default {
       let birthDate = this.birthDate.split("-")
       let birthday = new Date(Date.UTC(birthDate[0],birthDate[1] - 1,birthDate[2], this.birthTime, 0 , 0 ,0)).getTime()
       birthday = birthday / 1000
-      this.axios.get('board', {params: {
-          gender,
-          birthday,
-      }}).then((resp)=>{
-          let board = resp.data
-          this.$store.dispatch({
+      this.$store.dispatch({
             type: 'setBoardInfo',
-            currentUser: {
-              gender,
-              birthday,
-              board,
-            } 
-          }).then(()=>{
-            this.$router.push({name:"GetZiWeiBoard"})
-          })
+            gender, birthday, 
+      }).then(()=>{
+          this.$router.push({name:"GetZiWeiBoard"})
       })
     },
     resetValidation () {
