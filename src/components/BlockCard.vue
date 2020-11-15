@@ -145,6 +145,9 @@ export default {
                 case "十四主星":
                     mainStars.push(star)
                     break
+                case "流年干星":
+                    rightAttachedStars.push(star)
+                    break
                 case "右輔星":
                     rightAttachedStars.push(star)
                     break
@@ -175,6 +178,8 @@ export default {
                 return "indigo--text text--darken-1"
             case "左輔星":
                 return "indigo--text text--darken-1"
+            case "流年干星":
+                return "red--text text--darken-1"
             default:
                 return "blue-grey--text text--lighten-1"
             } 
