@@ -9941,10 +9941,10 @@ vue-cli-plugin-axios@~0.0.4:
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-axios/-/vue-cli-plugin-axios-0.0.4.tgz#29d4eb48275c7fe15b92e1fd5d95fbe2a966436f"
   integrity sha512-p2b/fvPJuPBnvU8027PAAuU5DiOzUn2lku8XLG/f6c8FU0N+/MXWZAlOuHhqd9e7+KIZitwe/c8qlmv7TglbTg==
 
-vue-cli-plugin-s3-deploy@4.0.0-rc3:
-  version "4.0.0-rc3"
-  resolved "https://registry.yarnpkg.com/vue-cli-plugin-s3-deploy/-/vue-cli-plugin-s3-deploy-4.0.0-rc3.tgz#99e4d906540abf09e11be2ea118954b3d552ee41"
-  integrity sha512-t+JvoUMcBVSBhOD8jadmWychIQ4ff0Tb/lWrRf2eMqe7c5Z/fvXB4lLuZZC/+q9aVl8ihHabJbXgL+nCbQSsnQ==
+vue-cli-plugin-s3-deploy@4.0.0-rc4:
+  version "4.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-s3-deploy/-/vue-cli-plugin-s3-deploy-4.0.0-rc4.tgz#a2f13ac65664a534b265e4bcfa4169e2ed91c4f9"
+  integrity sha512-8N7pyRnQVIt1GKYHuJvDQGBKnJZfRCiJxmFMKw0cEqO7Z/qpajIEP5gwaEqvrmmyen1+5GGJY7YksqoSYUylZg==
   dependencies:
     "@babel/cli" "^7.1.2"
     "@babel/core" "^7.1.2"
