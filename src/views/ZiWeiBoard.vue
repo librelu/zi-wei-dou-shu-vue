@@ -53,9 +53,9 @@
           <v-select
             v-model="gender"
             :items="genders"
-            :rules="[v => !!v || '請選擇生理性別!']"
+            :rules="[v => !!v || '請選擇性別!']"
             prepend-icon="mdi-human-male-female"
-            label="生理性別"
+            label="性別"
             required
           ></v-select>
         </v-col>
@@ -137,11 +137,14 @@ function getGenders(){
 }
 function getBirthTime(){
   let timeName = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"]
-  return Array(24).fill({}).map((_, idx)=> {
+  let time = Array(24).fill({}).map((_, idx)=> {
     return {
       text: idx+ "點"+ "-" + timeName[(parseInt((idx+1) / 2)) % 12] + "時",
       value: idx
     }
   })
+  let lastElement = time.slice(-1)
+  time.pop()
+  return lastElement.concat(time)
 }
 </script>
