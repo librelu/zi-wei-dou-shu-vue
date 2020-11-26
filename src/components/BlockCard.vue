@@ -3,7 +3,7 @@
         <div class="stars-row">
             <div class="text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
-                    <div :class="getFontStyle(star.StarType) + ' flex-column align-center'" :key="idx">
+                    <div :class="getFontStyle(star.StarType) + ' flex-column align-left'" :key="idx">
                         <div class="write-vertical">{{star.Name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
                         <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
@@ -21,7 +21,7 @@
             </div>
             <div class="text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
-                    <div :class="getFontStyle(star.StarType) + ' flex-column align-center'" :key="idx">
+                    <div :class="getFontStyle(star.StarType) + ' flex-column align-end'" :key="idx">
                         <div class="write-vertical">{{star.Name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
                         <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="stars-row align-end">
-            <div class="text-sm-caption smallest-text-size flex-column align-center">
+            <div class="text-sm-caption smallest-text-size flex-column align-left">
                 <template v-for="(star, idx) in sortStars(stars).otherStars">
                     <div :class="getFontStyle(star.StarType)" :key="idx">
                         <div>{{star.Name}}</div>
@@ -38,14 +38,17 @@
                 </template>
             </div>
             <div class="text-sm-caption smallest-text-size flex-column align-center">
-                <div class="text-sm-caption smallest-text-size" v-if="isShenGongLocation">(身)</div>
-                <div class="text-sm-caption smallest-text-size">{{tenYearsRound}}</div>
-            </div>
-            <div>
-                <div class="write-vertical text-sm-caption smallest-text-size">
+                <div class="text-sm-caption" v-if="isShenGongLocation">(身)</div>
+                <div class="text-sm-caption gong-wei-name white--text align-center">
                     {{gongWeiName}}
                 </div>
-                <div class="write-vertical text-sm-caption smallest-text-size">
+            </div>
+            <div class="text-sm-caption smallest-text-size flex-row align-end">
+                <div class="flex-column align-center">
+                    <div class="middle-year-text-size align-center">{{tenYearsRound.split('-')[0]}}-</div>
+                    <div class="middle-year-text-size align-center">{{tenYearsRound.split('-')[1]}}</div>
+                </div>
+                <div class="star-location-vertical blue-grey--text text--lighten-1">
                     {{blockLocation.TianGan}}
                     {{blockLocation.DiZhi}}
                 </div>
@@ -55,10 +58,30 @@
 </template>
 
 <style>
+.gong-wei-block{
+    display: flex;
+}
+.gong-wei-name{
+    background: #4a95f4;
+    border-radius: 3px;
+    padding: 2px 3px;
+    margin: 3px 0px;
+}
+.ten-years-round{
+    display: block;
+    padding: 2px 0px;
+}
+.middle-year-text-size{
+    font-size: 0.75em;
+}
 .miao-xian , .four-start{
     display: block !important;
     margin: 0px;
     width: 14px;
+}
+.star-location-vertical{
+    writing-mode: vertical-rl;
+    width: 5px;
 }
 .write-main-start-vertical{
     padding: 1px 0 0 0;
@@ -71,14 +94,9 @@
 .smallest-text-size{
     font-size: 0.65em
 }
-
 .star-main-block {
     display:block;
     min-height: 175px;
-}
-.stars-row{
-    height: 50%;
-    display:flex;
 }
 .stars-row div{
     display: flex;
@@ -87,6 +105,20 @@
 }
 .display-border{
     border: solid 1px gray;
+}
+.stars-row{
+    height: 50%;
+    display:flex;
+}
+@media screen and (min-width: 500px) {
+    .stars-row{
+        height: 50%;
+        display:flex;
+        padding: 5px;
+    }
+    .gong-wei-name{
+        padding: 2px 6px;
+    }
 }
 </style>
 
