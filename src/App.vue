@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app hide-on-scroll>
       <router-link to="/">Home</router-link> |
       <router-link to="/ziweiboard">紫微命盤</router-link>
     </v-app-bar>

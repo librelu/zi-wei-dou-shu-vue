@@ -111,12 +111,15 @@ export default {
     submit(){ 
       this.$refs.form.validate()
       let gender = this.gender
-      let birthDate = this.birthDate.split("-")
-      let birthday = new Date(Date.UTC(birthDate[0],birthDate[1] - 1,birthDate[2], this.birthTime, 0 , 0 ,0)).getTime()
-      birthday = birthday / 1000
+      let birthdayInfo = this.birthDate.split("-")
       this.$store.dispatch({
             type: 'setBoardInfo',
-            gender, birthday, 
+            gender,
+            birthYear: birthdayInfo[0],
+            birthMonth: birthdayInfo[1],
+            birthDate: birthdayInfo[2],
+            birthHour: this.birthTime,
+            timeZone: this.timeZone,
       }).then(()=>{
           this.$router.push({name:"GetZiWeiBoard"})
       })

@@ -112,6 +112,9 @@
 </template>
 
 <style>
+.star-board{
+    min-width: 98%;
+}
 .profile-info label {
     text-align-last:justify;
     display: inline-block;

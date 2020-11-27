@@ -9,7 +9,10 @@ export default new Vuex.Store({
     error: "",
     currentUser: {
       gender: 0,
-      birthday: 0,
+      birthYear: 0,
+      birthMonth: 0,
+      birthDate: 0,
+      birthHour: 0,
       boardType: "",
       board: {},
       originBoard: {},
@@ -20,8 +23,11 @@ export default new Vuex.Store({
     changeGender(state, gender) {
       state.currentUser.gender = gender
     },
-    changeBirthday(state, birthday) {
-      state.currentUser.birthday = birthday
+    changeBirthday(state, payload) {
+      state.currentUser.birthYear =  payload.birthYear
+      state.currentUser.birthMonth =  payload.birthMonth
+      state.currentUser.birthDate = payload.birthDate
+      state.currentUser.birthHour =  payload.birthHour
     },
     changeOriginBoard(state, payload) {
         state.currentUser.originBoard = payload
@@ -37,10 +43,14 @@ export default new Vuex.Store({
   actions: {
     setBoardInfo(state, payload) {
       state.commit('changeGender', payload.gender)
-      state.commit('changeBirthday', payload.birthday)
+      state.commit('changeBirthday', payload)
       return Vue.axios.get('board', {params: {
         gender: payload.gender,
-        birthday: payload.birthday,
+        birthYear: payload.birthYear,
+        birthMonth: payload.birthMonth,
+        birthDate: payload.birthDate,
+        birthHour: payload.birthHour,
+        timezone: (new Date()).getTimezoneOffset(),
       }}).then((resp)=>{
         state.commit('changeOriginBoard', resp.data)
         state.commit('changeBoard', {
@@ -61,7 +71,11 @@ export default new Vuex.Store({
     setYearBoard(state, payload) {
       return Vue.axios.get('year-board', {params: {
         gender: payload.gender,
-        birthday: payload.birthday,
+        birthYear: payload.birthYear,
+        birthMonth: payload.birthMonth,
+        birthDate: payload.birthDate,
+        birthHour: payload.birthHour,
+        timezone: (new Date()).getTimezoneOffset(),
         index: payload.index -1,
       }}).then((resp)=>{
         state.commit('changeYearBoard', resp.data)
@@ -91,7 +105,12 @@ export default new Vuex.Store({
       return state.currentUser.gender
     },
     birthday: state => {
-      return state.currentUser.birthday
+      return {
+        birthYear: state.currentUser.birthYear,
+        birthMonth: state.currentUser.birthMonth,
+        birthDate: state.currentUser.birthDate,
+        birthHour: state.currentUser.birthHour,
+      }
     },
     board: state => {
       return state.currentUser.board

@@ -1,27 +1,27 @@
 <template>
     <v-col cols="3" class="display-border star-main-block">
         <div class="stars-row">
-            <div class="text-sm-caption smallest-text-size">
+            <div class="text-sm-caption smallest-text-size flex-row justify-right">
                 <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
-                    <div :class="getFontStyle(star.StarType) + ' flex-column align-left'" :key="idx">
+                    <div :class="getFontStyle(star.StarType)" :key="idx">
                         <div class="write-vertical">{{star.Name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
                         <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
                     </div>
                 </template>
             </div>
-            <div class="text-md-body-1 text-sm-caption text-caption font-weight-bold">
+            <div class="text-md-body-1 text-sm-caption text-caption font-weight-bold flex-row justify-center">
                 <template v-for="(star, idx) in sortStars(stars).mainStars">
-                    <div :class="getFontStyle(star.StarType) + ' flex-column align-center' " :key="idx">
+                    <div :class="getFontStyle(star.StarType) + 'main-star'" :key="idx">
                         <div class="write-main-start-vertical">{{star.Name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
                         <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
                     </div>
                 </template>
             </div>
-            <div class="text-sm-caption smallest-text-size">
+            <div class="text-sm-caption smallest-text-size flex-row justify-end">
                 <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
-                    <div :class="getFontStyle(star.StarType) + ' flex-column align-end'" :key="idx">
+                    <div :class="getFontStyle(star.StarType)" :key="idx">
                         <div class="write-vertical">{{star.Name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
                         <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
@@ -30,24 +30,21 @@
             </div>
         </div>
         <div class="stars-row align-end">
-            <div class="text-sm-caption smallest-text-size flex-column align-left">
+            <div class="text-sm-caption smallest-text-size flex-column align-start">
                 <template v-for="(star, idx) in sortStars(stars).otherStars">
                     <div :class="getFontStyle(star.StarType)" :key="idx">
                         <div>{{star.Name}}</div>
                     </div>
                 </template>
             </div>
-            <div class="text-sm-caption smallest-text-size flex-column align-center">
+            <div class="text-sm-caption smallest-text-size flex-column justify-center">
                 <div class="text-sm-caption" v-if="isShenGongLocation">(身)</div>
-                <div class="text-sm-caption gong-wei-name white--text align-center">
+                <div class="text-sm-caption gong-wei-name white--text">
                     {{gongWeiName}}
                 </div>
             </div>
-            <div class="text-sm-caption smallest-text-size flex-row align-end">
-                <div class="flex-column align-center">
-                    <div class="middle-year-text-size align-center">{{tenYearsRound.split('-')[0]}}-</div>
-                    <div class="middle-year-text-size align-center">{{tenYearsRound.split('-')[1]}}</div>
-                </div>
+            <div class="text-sm-caption smallest-text-size flex-row justify-end align-end">
+                <div class="middle-year-text-size">{{tenYearsRound}}</div>
                 <div class="star-location-vertical blue-grey--text text--lighten-1">
                     {{blockLocation.TianGan}}
                     {{blockLocation.DiZhi}}
@@ -72,6 +69,8 @@
     padding: 2px 0px;
 }
 .middle-year-text-size{
+    width: 2px;
+    flex-grow: 4;
     font-size: 0.75em;
 }
 .miao-xian , .four-start{
@@ -81,14 +80,14 @@
 }
 .star-location-vertical{
     writing-mode: vertical-rl;
-    width: 5px;
+    width:15px;
 }
 .write-main-start-vertical{
     padding: 1px 0 0 0;
     width: 14px;
 }
 .write-vertical{
-    padding: 4px 0 0 0;
+    padding: 5px 0 5px 0;
     width: 13px;
 }
 .smallest-text-size{
@@ -98,7 +97,7 @@
     display:block;
     min-height: 175px;
 }
-.stars-row div{
+.stars-row>div{
     display: flex;
     flex-wrap: wrap;
     flex: 1;
@@ -107,17 +106,20 @@
     border: solid 1px gray;
 }
 .stars-row{
-    height: 50%;
+    height: 98px;
     display:flex;
 }
 @media screen and (min-width: 500px) {
     .stars-row{
-        height: 50%;
+        height: 120px;
         display:flex;
         padding: 5px;
     }
     .gong-wei-name{
         padding: 2px 6px;
+    }
+    .write-main-start-vertical{
+        width: 17px;
     }
 }
 </style>
