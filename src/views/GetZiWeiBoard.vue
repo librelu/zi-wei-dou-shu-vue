@@ -108,6 +108,7 @@
                 :tenYearsRound="blocks[11].TenYearsRound"
             ></BlockCard>
         </v-row>
+        <canvas id="star_connection_display"></canvas>
     </v-container>
 </template>
 
@@ -126,14 +127,18 @@
     padding: 0 0 0 10px;
     text-align: left;
 }
-.profile-start p{ 
-    margin: 0px;
+.profile-start, .profile-end{
+    z-index:9999;
 }
-.profile-end p{ 
+.profile-start p, .profile-end p{ 
     margin: 0px;
 }
 .pannel-min-height{
     min-height: 60px;
+}
+#star_connection_display{
+    position: fixed;
+    z-index: 0;
 }
 </style>
 
@@ -142,11 +147,110 @@ import BlockCard from '@/components/BlockCard.vue'
 import BoardMenu from '@/components/BoardMenu.vue'
 import BoardType from '@/enum/boardType'
 import YearBoardIndexPanel from '@/components/YearBoardIndexPanel.vue'
+
+let locationMap = [10, 9, 8, 6, 4, 0, 1, 2, 3, 5, 7, 11]
+function getBlockLocation(blockIndex){
+    let block = document.getElementsByClassName('star-main-block')[blockIndex].getBoundingClientRect()
+    let canvas = document.getElementById('star_connection_display')
+    let result = {
+        x: 0,
+        y: 0,
+    }
+    switch (blockIndex) {
+        case 0:
+            result.x = 0
+            result.y = 0
+            break
+        case 1:
+            result.x = block.width / 2
+            result.y = 0
+            break
+        case 2:
+            result.x = canvas.width - (block.width / 2)
+            result.y = 0
+            break
+        case 3:
+            result.x = canvas.width
+            result.y = 0
+            break
+        case 4:
+            result.x = 0
+            result.y = block.height / 2
+            break
+        case 5:
+            result.x = canvas.width
+            result.y = block.height / 2
+            break
+        case 6:
+            result.x = 0
+            result.y = canvas.height - (block.height / 2) 
+            break
+        case 7:
+            result.x = canvas.width
+            result.y = canvas.height - (block.height / 2)
+            break
+        case 8:
+            result.x = 0
+            result.y = canvas.height
+            break
+        case 9:
+            result.x = block.width / 2
+            result.y = canvas.height
+            break
+        case 10:
+            result.x = canvas.width - (block.width / 2)
+            result.y = canvas.height
+            break
+        case 11:
+            result.x = canvas.width
+            result.y = canvas.height
+            break
+    }
+    return result
+}
+function drawCanvas(locations){
+    let canvas = document.getElementById('star_connection_display')
+    let firstStarBlock = document.getElementsByClassName('star-main-block')[0]
+    canvas.width = document.getElementsByClassName('profile-end')[0].clientWidth
+    canvas.height = document.getElementsByClassName('profile-end')[0].clientHeight*2
+    let positionX = firstStarBlock.getBoundingClientRect().x + firstStarBlock.getBoundingClientRect().width
+    let positionY = firstStarBlock.getBoundingClientRect().y + firstStarBlock.getBoundingClientRect().height
+    canvas.style.left = `${positionX}px`
+    canvas.style.top = `${positionY}px`
+    if (canvas.getContext){
+        let ctx = canvas.getContext('2d');
+        ctx.strokeStyle = "rgba(255,0,0,0.5)";
+        locations.forEach((e)=>{
+            for (let [k, v] of e ){
+                let startPosition = getBlockLocation(k)
+                let endPosition = getBlockLocation(v)
+                ctx.beginPath()
+                ctx.moveTo(startPosition.x, startPosition.y)
+                ctx.lineTo(endPosition.x, endPosition.y)
+                ctx.stroke()
+            }
+        })
+    }
+}
 export default {
     beforeCreate(){
         if (this.$store.getters.board.Blocks === undefined || this.$store.getters.board.Blocks === {}){
                 this.$router.push({name:"ZiWeiBoard"})
         }
+    },
+    mounted(){
+        let map = [
+            (new Map()).set(locationMap[4], locationMap[8]),
+            (new Map()).set(locationMap[4], locationMap[10]),
+            (new Map()).set(locationMap[4], locationMap[0]),
+        ]
+        drawCanvas(map)
+        window.addEventListener("resize", function(){
+            drawCanvas(map)
+        })
+        window.addEventListener("scroll", function(){
+            drawCanvas(map)
+        })
     },
     components: {
         BlockCard,
