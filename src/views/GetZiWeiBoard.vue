@@ -156,7 +156,7 @@ function getBlockLocation(blockIndex){
         x: 0,
         y: 0,
     }
-    switch (blockIndex) {
+    switch (locationMap[blockIndex]) {
         case 0:
             result.x = 0
             result.y = 0
@@ -208,7 +208,7 @@ function getBlockLocation(blockIndex){
     }
     return result
 }
-function drawCanvas(locations){
+function drawCanvas(locations, mingGongLocation){
     let canvas = document.getElementById('star_connection_display')
     let firstStarBlock = document.getElementsByClassName('star-main-block')[0]
     canvas.width = document.getElementsByClassName('profile-end')[0].clientWidth
@@ -220,15 +220,13 @@ function drawCanvas(locations){
     if (canvas.getContext){
         let ctx = canvas.getContext('2d');
         ctx.strokeStyle = "rgba(255,0,0,0.5)";
-        locations.forEach((e)=>{
-            for (let [k, v] of e ){
-                let startPosition = getBlockLocation(k)
-                let endPosition = getBlockLocation(v)
-                ctx.beginPath()
-                ctx.moveTo(startPosition.x, startPosition.y)
-                ctx.lineTo(endPosition.x, endPosition.y)
-                ctx.stroke()
-            }
+        locations.forEach((v)=>{
+            let startPosition = getBlockLocation(mingGongLocation)
+            let endPosition = getBlockLocation(v)
+            ctx.beginPath()
+            ctx.moveTo(startPosition.x, startPosition.y)
+            ctx.lineTo(endPosition.x, endPosition.y)
+            ctx.stroke()
         })
     }
 }
@@ -239,17 +237,21 @@ export default {
         }
     },
     mounted(){
-        let map = [
-            (new Map()).set(locationMap[4], locationMap[8]),
-            (new Map()).set(locationMap[4], locationMap[10]),
-            (new Map()).set(locationMap[4], locationMap[0]),
-        ]
-        drawCanvas(map)
+        drawCanvas(
+            this.$store.getters.board.MainStarConnections, 
+            this.$store.getters.board.MingGongLocation,
+        )
         window.addEventListener("resize", function(){
-            drawCanvas(map)
+            drawCanvas(
+                this.$store.getters.board.MainStarConnections, 
+                this.$store.getters.board.MingGongLocation,
+            )
         })
         window.addEventListener("scroll", function(){
-            drawCanvas(map)
+            drawCanvas(
+                this.$store.getters.board.MainStarConnections, 
+                this.$store.getters.board.MingGongLocation,
+            )
         })
     },
     components: {
