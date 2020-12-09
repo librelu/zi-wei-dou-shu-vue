@@ -220,6 +220,10 @@ function drawCanvas(locations, mingGongLocation){
     if (canvas.getContext){
         let ctx = canvas.getContext('2d');
         ctx.strokeStyle = "rgba(255,0,0,0.5)";
+        // error handling when layout is not ready
+        if (locations.length <= 0){
+            return
+        }
         locations.forEach((v)=>{
             let startPosition = getBlockLocation(mingGongLocation)
             let endPosition = getBlockLocation(v)
@@ -237,21 +241,14 @@ export default {
         }
     },
     mounted(){
-        drawCanvas(
-            this.$store.getters.board.MainStarConnections, 
-            this.$store.getters.board.MingGongLocation,
-        )
+        let mainStarConnections = this.$store.getters.board.MainStarConnections
+        let mingGongLocation = this.$store.getters.board.MingGongLocation
+        drawCanvas(mainStarConnections, mingGongLocation)
         window.addEventListener("resize", function(){
-            drawCanvas(
-                this.$store.getters.board.MainStarConnections, 
-                this.$store.getters.board.MingGongLocation,
-            )
+            drawCanvas(mainStarConnections, mingGongLocation)
         })
         window.addEventListener("scroll", function(){
-            drawCanvas(
-                this.$store.getters.board.MainStarConnections, 
-                this.$store.getters.board.MingGongLocation,
-            )
+            drawCanvas(mainStarConnections, mingGongLocation)
         })
     },
     components: {
