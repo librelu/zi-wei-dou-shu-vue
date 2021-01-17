@@ -137,8 +137,10 @@
     min-height: 60px;
 }
 #star_connection_display{
-    position: fixed;
+    position: absolute;
     z-index: 0;
+    top: 0;
+    left: 0;
 }
 </style>
 
@@ -211,10 +213,13 @@ function getBlockLocation(blockIndex){
 function drawCanvas(locations, mingGongLocation){
     let canvas = document.getElementById('star_connection_display')
     let firstStarBlock = document.getElementsByClassName('star-main-block')[0]
-    canvas.width = document.getElementsByClassName('profile-end')[0].clientWidth
-    canvas.height = document.getElementsByClassName('profile-end')[0].clientHeight*2
-    let positionX = firstStarBlock.getBoundingClientRect().x + firstStarBlock.getBoundingClientRect().width
-    let positionY = firstStarBlock.getBoundingClientRect().y + firstStarBlock.getBoundingClientRect().height
+    canvas.width = (document.getElementsByClassName('profile-end')[0].clientWidth)
+    canvas.height = (document.getElementsByClassName('profile-end')[0].clientHeight*2)
+    let overlayX = parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingLeft, 10) + 
+        parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).marginLeft, 10)
+    let overlayY = getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingTop
+    let positionX = firstStarBlock.getBoundingClientRect().width + parseInt(overlayX, 10)
+    let positionY = firstStarBlock.getBoundingClientRect().height + parseInt(overlayY, 10)
     canvas.style.left = `${positionX}px`
     canvas.style.top = `${positionY}px`
     if (canvas.getContext){
@@ -244,6 +249,9 @@ export default {
         let mainStarConnections = this.$store.getters.board.MainStarConnections
         let mingGongLocation = this.$store.getters.board.MingGongLocation
         drawCanvas(mainStarConnections, mingGongLocation)
+        window.addEventListener("gestureend", function(){
+            drawCanvas(mainStarConnections, mingGongLocation)
+        })
         window.addEventListener("resize", function(){
             drawCanvas(mainStarConnections, mingGongLocation)
         })
