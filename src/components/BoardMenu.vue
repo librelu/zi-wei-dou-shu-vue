@@ -36,6 +36,7 @@ export default {
                 { title: '流年' },
                 { title: '流月' },
                 { title: '流日' },
+                { title: '十年' },
             ],
         }
     },
@@ -58,6 +59,8 @@ export default {
                 case 2:
                     break
                 case 3:
+                    break
+                case 4:
                     break
             }
         }

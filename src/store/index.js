@@ -20,30 +20,30 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    changeGender(state, gender) {
+    modifyGender(state, gender) {
       state.currentUser.gender = gender
     },
-    changeBirthday(state, payload) {
+    modifyBirthday(state, payload) {
       state.currentUser.birthYear =  payload.birthYear
       state.currentUser.birthMonth =  payload.birthMonth
       state.currentUser.birthDate = payload.birthDate
       state.currentUser.birthHour =  payload.birthHour
     },
-    changeOriginBoard(state, payload) {
+    modifyOriginBoard(state, payload) {
         state.currentUser.originBoard = payload
     },
-    changeYearBoard(state, payload) {
+    modifyYearBoard(state, payload) {
       state.currentUser.yearBoard = payload
-  },
-    changeBoard(state, payload){
+    },
+    modifyBoard(state, payload) {
       state.currentUser.board = payload.board
       state.currentUser.boardType = payload.boardType
     },
   },
   actions: {
     setBoardInfo(state, payload) {
-      state.commit('changeGender', payload.gender)
-      state.commit('changeBirthday', payload)
+      state.commit('modifyGender', payload.gender)
+      state.commit('modifyBirthday', payload)
       return Vue.axios.get('board', {params: {
         gender: payload.gender,
         birthYear: payload.birthYear,
@@ -52,8 +52,8 @@ export default new Vuex.Store({
         birthHour: payload.birthHour,
         timezone: (new Date()).getTimezoneOffset(),
       }}).then((resp)=>{
-        state.commit('changeOriginBoard', resp.data)
-        state.commit('changeBoard', {
+        state.commit('modifyOriginBoard', resp.data)
+        state.commit('modifyBoard', {
           board: resp.data,
           boardType: BoardType.originBoard,
       })
@@ -63,7 +63,7 @@ export default new Vuex.Store({
       })
     },
     setOriginBoard(state) {
-      state.commit('changeBoard', {
+      state.commit('modifyBoard', {
         board: this.getters.originBoard,
         boardType: BoardType.originBoard,
       })
@@ -78,8 +78,8 @@ export default new Vuex.Store({
         timezone: (new Date()).getTimezoneOffset(),
         index: payload.index -1,
       }}).then((resp)=>{
-        state.commit('changeYearBoard', resp.data)
-        state.commit('changeBoard', {
+        state.commit('modifyYearBoard', resp.data)
+        state.commit('modifyBoard', {
           board: resp.data,
           boardType: BoardType.yearBoard,
       })
