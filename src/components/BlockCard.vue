@@ -1,64 +1,137 @@
 <template>
-    <v-col cols="3" class="display-border star-main-block">
+    <div class="display-border star-main-block">
         <div class="stars-row">
-            <div class="text-sm-caption smallest-text-size flex-row justify-right">
+            <div class="star-block text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
-                    <div :class="getFontStyle(star.StarType)" :key="idx">
-                        <div class="write-vertical">{{star.Name}}</div>
-                        <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
-                        <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
+                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                        <span class="write-vertical">{{star.name}}</span>
+                        <span class="miao-xian write-vertical text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</span>
                     </div>
                 </template>
             </div>
-            <div class="text-md-body-1 text-sm-caption text-caption font-weight-bold flex-row justify-center">
+            <div class="main-stars text-md-body-1 text-sm-caption text-caption font-weight-bold">
                 <template v-for="(star, idx) in sortStars(stars).mainStars">
-                    <div :class="getFontStyle(star.StarType) + 'main-star'" :key="idx">
-                        <div class="write-main-start-vertical">{{star.Name}}</div>
-                        <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
-                        <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
+                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                        <div class="write-vertical">{{star.name}}</div>
+                        <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</div>
                     </div>
                 </template>
             </div>
-            <div class="text-sm-caption smallest-text-size flex-row justify-end">
+            <div class="right-side-stars text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
-                    <div :class="getFontStyle(star.StarType)" :key="idx">
-                        <div class="write-vertical">{{star.Name}}</div>
-                        <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.MiaoXian.length > 0">{{star.MiaoXian}}</div>
-                        <div class="four-start text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.MiaoXian.length > 0">{{star.FourStar}}</div>
+                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                        <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">年{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'tian_board'">
+                            <div class="write-vertical">{{star.name}}</div>
+                        </template>
+                        <div class="miao-xian write-vertical text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</div>
+                        <div class="four-start write-vertical text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.miao_xian.length > 0">{{star.four_star}}</div>
                     </div>
                 </template>
             </div>
         </div>
-        <div class="stars-row align-end">
-            <div class="text-sm-caption smallest-text-size flex-column align-start">
+        <div class="stars-row">
+            <div class="other-stars text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).otherStars">
-                    <div :class="getFontStyle(star.StarType)" :key="idx">
-                        <div>{{star.Name}}</div>
-                    </div>
+                    <template v-if="star.board_type === 'tian_board'">
+                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                            {{star.name}}
+                        </span>
+                    </template>
+                    <template v-if="star.board_type === 'year_board'">
+                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                            年{{star.name}}
+                        </span>
+                    </template>
                 </template>
             </div>
-            <div class="text-sm-caption smallest-text-size flex-column justify-center">
+            <div class="gong-wei-block text-sm-caption smallest-text-size justify-center">
                 <div class="text-sm-caption" v-if="isShenGongLocation">(身)</div>
-                <div class="text-sm-caption gong-wei-name white--text">
-                    {{gongWeiName}}
-                </div>
+                <template v-for="(gong, idx) in gongWei">
+                    <template v-if="gong.type === 'tian_board'">
+                        <div class="text-sm-caption tian_gong-wei-name white--text" :key="idx">
+                            {{gong.name}}
+                        </div>
+                    </template>
+                    <template v-if="gong.type === 'year_board'">
+                        <span class="text-sm-caption year_gong-wei-name white--text" :key="idx">
+                            年{{gong.name}}
+                        </span>
+                    </template>
+                </template>
             </div>
-            <div class="text-sm-caption smallest-text-size flex-row justify-end align-end">
-                <div class="middle-year-text-size">{{tenYearsRound}}</div>
-                <div class="star-location-vertical blue-grey--text text--lighten-1">
-                    {{blockLocation.TianGan}}
-                    {{blockLocation.DiZhi}}
+            <div class="status-block text-sm-caption smallest-text-size">
+                <div class="four-stars-block">
+                    <template v-for="(fourStarsObj , boardType) in fourStars(stars)">
+                        <template v-if="boardType === 'tian_board'">
+                            <template v-for="(idx, fourStar) in fourStarsObj">
+                                <span class="deep-purple--text" :key="idx">{{fourStar}}</span>
+                            </template>
+                        </template>
+                        <template v-if="boardType === 'year_board'">
+                            <template v-for="(idx, fourStar) in fourStarsObj">
+                                <span class="blue--text" :key="idx">年{{fourStar}}</span>
+                            </template>
+                        </template>
+                    </template>
                 </div>
+                <span class="middle-year-text-size">{{tenYearsRound}}</span>
+                <span class="star-location-block write-vertical blue-grey--text text--lighten-1">
+                    {{blockLocation.tian_gan}}
+                    {{blockLocation.dizhi}}
+                </span>
             </div>
         </div>
-    </v-col>
+    </div>
 </template>
 
 <style>
+.star-location-block{
+    align-self: flex-end;
+}
+.four-stars-block{
+    display:flex;
+    flex-direction: column;
+    align-content: flex-end;
+}
+.status-block{
+    flex-direction: row;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+.gong-wei-block{
+    flex-direction: column;
+    align-content: center;
+    align-self: flex-end;
+}
+.other-stars{
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.main-stars{
+    justify-content: center;
+}
+.right-side-stars{
+    justify-content: flex-end;
+}
+.write-vertical{
+    writing-mode: vertical-lr;
+    vertical-align: middle;
+    padding: 1px;
+}
 .gong-wei-block{
     display: flex;
 }
-.gong-wei-name{
+.tian_gong-wei-name{
+    background: #9300fc;
+    border-radius: 3px;
+    padding: 2px 3px;
+    margin: 3px 0px;
+}
+.year_gong-wei-name{
     background: #4a95f4;
     border-radius: 3px;
     padding: 2px 3px;
@@ -74,28 +147,13 @@
     font-size: 0.75em;
 }
 .miao-xian , .four-start{
-    display: block !important;
-    margin: 0px;
-    width: 14px;
-}
-.star-location-vertical{
-    writing-mode: vertical-rl;
-    width:15px;
-}
-.write-main-start-vertical{
-    padding: 1px 0 0 0;
-    width: 14px;
-}
-.write-vertical{
-    padding: 5px 0 5px 0;
-    width: 13px;
+    display: block;
 }
 .smallest-text-size{
     font-size: 0.65em
 }
 .star-main-block {
-    display:block;
-    min-height: 175px;
+    flex:1 1 25%;
 }
 .stars-row>div{
     display: flex;
@@ -106,12 +164,13 @@
     border: solid 1px gray;
 }
 .stars-row{
-    height: 98px;
+    min-width: 120px;
+    height: 105px;
     display:flex;
 }
 @media screen and (min-width: 500px) {
     .stars-row{
-        height: 120px;
+        height: 105px;
         display:flex;
         padding: 5px;
     }
@@ -127,8 +186,8 @@
 <script>
 export default {
     props: {
-        gongWeiName: {
-            type: String,
+        gongWei: {
+            type: Array,
         },
         stars: {
             type: Array,
@@ -144,14 +203,31 @@ export default {
         }
     },
     methods: {
+        fourStars: (stars) => {
+            let result = {}
+            stars.forEach(star=>{
+                if (star.star_type === "流年干星") {
+                    if (result[star.board_type] === undefined) {
+                        result[star.board_type] = {}
+                    }
+                    result[star.board_type][star.name] = true
+                }
+                if (star.four_star !== "" && star.four_star !== undefined) {
+                    if (result[star.board_type] === undefined) {
+                        result[star.board_type] = {}
+                    }
+                    result[star.board_type][star.four_star] = true
+                }
+            })
+            return result
+        }, 
         sortStars: (stars) => {
             let mainStars = []
             let rightAttachedStars = []
             let leftAttachedStars = []
             let otherStars = []
-            let fourStars = []
             stars.forEach((star)=>{
-                switch(star.StarType) {
+                switch(star.star_type) {
                 case "十四主星":
                     mainStars.push(star)
                     break
@@ -164,9 +240,6 @@ export default {
                 case "左輔星":
                     leftAttachedStars.push(star)
                     break
-                case "四化":
-                    fourStars.push(star)
-                    break
                 default:
                     otherStars.push(star)
                     break
@@ -176,7 +249,6 @@ export default {
                 mainStars,
                 rightAttachedStars,
                 leftAttachedStars,
-                fourStars,
                 otherStars
             }
         },
