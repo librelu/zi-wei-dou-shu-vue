@@ -61,6 +61,14 @@ export default {
                 case 3:
                     break
                 case 4:
+                    this.$store.dispatch('setTenYearsBoard', {
+                        gender: this.$store.getters.gender,
+                        birthYear: this.$store.getters.birthday.birthYear,
+                        birthMonth: this.$store.getters.birthday.birthMonth,
+                        birthDate: this.$store.getters.birthday.birthDate,
+                        birthHour: this.$store.getters.birthday.birthHour,
+                        index: 1,
+                    })
                     break
             }
         }

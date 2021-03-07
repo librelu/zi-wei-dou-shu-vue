@@ -20,11 +20,14 @@
             <div class="right-side-stars text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
                     <div :class="getFontStyle(star.star_type)" :key="idx">
+                        <template v-if="star.board_type === 'tian_board'">
+                            <div class="write-vertical">{{star.name}}</div>
+                        </template>
                         <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">年{{star.name}}</div>
                         </template>
-                        <template v-if="star.board_type === 'tian_board'">
-                            <div class="write-vertical">{{star.name}}</div>
+                        <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">大{{star.name}}</div>
                         </template>
                         <div class="miao-xian write-vertical text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</div>
                         <div class="four-start write-vertical text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.miao_xian.length > 0">{{star.four_star}}</div>
@@ -40,9 +43,14 @@
                             {{star.name}}
                         </span>
                     </template>
-                    <template v-if="star.board_type === 'year_board'">
+                    <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
                         <span :class="getFontStyle(star.star_type)" :key="idx">
                             年{{star.name}}
+                        </span>
+                    </template>
+                    <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
+                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                            大{{star.name}}
                         </span>
                     </template>
                 </template>
@@ -59,6 +67,11 @@
                             年{{gong.name}}
                         </span>
                     </template>
+                    <template v-if="gong.type === 'ten_years_board'">
+                        <span class="text-sm-caption year_gong-wei-name white--text" :key="idx">
+                            大{{gong.name}}
+                        </span>
+                    </template>
                 </template>
             </div>
             <div class="status-block text-sm-caption smallest-text-size">
@@ -72,6 +85,11 @@
                         <template v-if="boardType === 'year_board'">
                             <template v-for="(_, fourStar) in fourStarsObj">
                                 <span class="blue--text" :key="Math.random()+fourStar">年{{fourStar}}</span>
+                            </template>
+                        </template>
+                        <template v-if="boardType === 'ten_years_board'">
+                            <template v-for="(_, fourStar) in fourStarsObj">
+                                <span class="blue--text" :key="Math.random()+fourStar">大{{fourStar}}</span>
                             </template>
                         </template>
                     </template>

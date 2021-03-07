@@ -40,7 +40,7 @@
             ></BlockCard>
             <div class="profile-start text-caption blue-grey--text text--darken-1 " align-self="end">
                 <v-col><BoardMenu></BoardMenu></v-col>
-                <v-col class="pannel-min-height"><YearBoardIndexPanel v-if="isYearBoard"></YearBoardIndexPanel></v-col>
+                <v-col class="pannel-min-height"><RotateIndexPanel v-if="isRoate"></RotateIndexPanel></v-col>
                 <div class="profile-info">
                     <div><label>陽曆</label>: {{board.birthday}}</div>
                     <div><label>陰曆</label>: {{lunaBirthdayYear}}{{lunaBirthdayDate}}</div>
@@ -159,7 +159,7 @@
 import BlockCard from '@/components/BlockCard.vue'
 import BoardMenu from '@/components/BoardMenu.vue'
 import BoardType from '@/enum/boardType'
-import YearBoardIndexPanel from '@/components/YearBoardIndexPanel.vue'
+import RotateIndexPanel from '@/components/RotateIndexPanel.vue'
 
 let locationMap = [10, 9, 8, 6, 4, 0, 1, 2, 3, 5, 7, 11]
 function getBlockLocation(blockIndex){
@@ -274,7 +274,7 @@ export default {
     components: {
         BlockCard,
         BoardMenu,
-        YearBoardIndexPanel
+        RotateIndexPanel
     },
     computed: {
         lunaBirthdayYear(){
@@ -283,8 +283,8 @@ export default {
         lunaBirthdayDate(){
             return this.board.luna_birthday.split("年")[1]
         },
-        isYearBoard(){
-            return this.$store.getters.boardType === BoardType.yearBoard
+        isRoate(){
+            return BoardType[this.$store.getters.boardType] !== "OriginBoard" && BoardType[this.$store.getters.boardType] || false
         },
         board(){
             return this.$store.getters.board

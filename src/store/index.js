@@ -17,6 +17,7 @@ export default new Vuex.Store({
       board: {},
       originBoard: {},
       yearBoard: {},
+      tenYearsBoard: {},
     }
   },
   mutations: {
@@ -30,10 +31,13 @@ export default new Vuex.Store({
       state.currentUser.birthHour =  payload.birthHour
     },
     modifyOriginBoard(state, payload) {
-        state.currentUser.originBoard = payload
+      state.currentUser.originBoard = payload
     },
     modifyYearBoard(state, payload) {
       state.currentUser.yearBoard = payload
+    },
+    modifyTenYearsBoard(state, payload) {
+      state.currentUser.tenYearsBoard = payload
     },
     modifyBoard(state, payload) {
       state.currentUser.board = payload.board
@@ -55,7 +59,7 @@ export default new Vuex.Store({
         state.commit('modifyOriginBoard', resp.data)
         state.commit('modifyBoard', {
           board: resp.data,
-          boardType: BoardType.originBoard,
+          boardType: BoardType.OriginBoard,
       })
       }).catch((err) => {
         console.log(err)
@@ -65,7 +69,7 @@ export default new Vuex.Store({
     setOriginBoard(state) {
       state.commit('modifyBoard', {
         board: this.getters.originBoard,
-        boardType: BoardType.originBoard,
+        boardType: BoardType.OriginBoard,
       })
     }, 
     setYearBoard(state, payload) {
@@ -81,13 +85,33 @@ export default new Vuex.Store({
         state.commit('modifyYearBoard', resp.data)
         state.commit('modifyBoard', {
           board: resp.data,
-          boardType: BoardType.yearBoard,
+          boardType: BoardType.YearBoard,
       })
       }).catch((err) => {
         console.log(err)
         state.error = err
       })
-    }
+    },
+    setTenYearsBoard(state, payload) {
+      return Vue.axios.get('ten-board', {params: {
+          gender: payload.gender,
+          birthYear: payload.birthYear,
+          birthMonth: payload.birthMonth,
+          birthDate: payload.birthDate,
+          birthHour: payload.birthHour,
+          timezone: (new Date()).getTimezoneOffset(),
+          index: payload.index -1,
+        }}).then((resp)=>{
+          state.commit('modifyTenYearsBoard', resp.data)
+          state.commit('modifyBoard', {
+            board: resp.data,
+            boardType: BoardType.TenYearsBoard,
+        })
+        }).catch((err) => {
+          console.log(err)
+          state.error = err
+        })
+    },
   },
   modules: {
   },

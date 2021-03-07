@@ -1,6 +1,7 @@
 let BoardType = {
-    originBoard: "originBoard",
-    yearBoard: "yearBoard",
+    OriginBoard: "OriginBoard",
+    YearBoard: "YearBoard",
+    TenYearsBoard: "TenYearsBoard",
 }
 
 export default BoardType
