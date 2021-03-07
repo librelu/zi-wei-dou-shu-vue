@@ -48,11 +48,10 @@
                 </template>
             </div>
             <div class="gong-wei-block text-sm-caption smallest-text-size justify-center">
-                <div class="text-sm-caption" v-if="isShenGongLocation">(身)</div>
                 <template v-for="(gong, idx) in gongWei">
                     <template v-if="gong.type === 'tian_board'">
                         <div class="text-sm-caption tian_gong-wei-name white--text" :key="idx">
-                            {{gong.name}}
+                            {{tainBoardGongWeiName(gong.name, isShenGongLocation)}}
                         </div>
                     </template>
                     <template v-if="gong.type === 'year_board'">
@@ -66,29 +65,33 @@
                 <div class="four-stars-block">
                     <template v-for="(fourStarsObj , boardType) in fourStars(stars)">
                         <template v-if="boardType === 'tian_board'">
-                            <template v-for="(idx, fourStar) in fourStarsObj">
-                                <span class="deep-purple--text" :key="idx">{{fourStar}}</span>
+                            <template v-for="(_, fourStar) in fourStarsObj">
+                                <span class="deep-purple--text" :key="Math.random()+fourStar">{{fourStar}}</span>
                             </template>
                         </template>
                         <template v-if="boardType === 'year_board'">
-                            <template v-for="(idx, fourStar) in fourStarsObj">
-                                <span class="blue--text" :key="idx">年{{fourStar}}</span>
+                            <template v-for="(_, fourStar) in fourStarsObj">
+                                <span class="blue--text" :key="Math.random()+fourStar">年{{fourStar}}</span>
                             </template>
                         </template>
                     </template>
                 </div>
-                <span class="middle-year-text-size">{{tenYearsRound}}</span>
-                <span class="star-location-block write-vertical blue-grey--text text--lighten-1">
-                    {{blockLocation.tian_gan}}
-                    {{blockLocation.dizhi}}
-                </span>
+                <div class="years-and-star-location">
+                    <span class="write-vertical blue-grey--text text--lighten-1">
+                        {{blockLocation.tian_gan}}
+                        {{blockLocation.dizhi}}
+                    </span>
+                    <span class="middle-year-text-size">{{tenYearsRound}}</span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style>
-.star-location-block{
+.years-and-star-location{
+    display: flex;
+    flex-direction: column;
     align-self: flex-end;
 }
 .four-stars-block{
@@ -99,7 +102,7 @@
 .status-block{
     flex-direction: row;
     align-content: flex-end;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 .gong-wei-block{
     flex-direction: column;
@@ -108,8 +111,11 @@
 }
 .other-stars{
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-end;
+}
+.other-stars span{
+    margin-right: 7px;
 }
 .main-stars{
     justify-content: center;
@@ -137,13 +143,7 @@
     padding: 2px 3px;
     margin: 3px 0px;
 }
-.ten-years-round{
-    display: block;
-    padding: 2px 0px;
-}
 .middle-year-text-size{
-    width: 2px;
-    flex-grow: 4;
     font-size: 0.75em;
 }
 .miao-xian , .four-start{
@@ -168,7 +168,7 @@
     height: 105px;
     display:flex;
 }
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 800px) {
     .stars-row{
         height: 105px;
         display:flex;
@@ -203,6 +203,24 @@ export default {
         }
     },
     methods: {
+        tainBoardGongWeiName: (gongWeiName,isShenGongLocation) => {
+            if (!isShenGongLocation) {
+                return gongWeiName
+            }
+            switch(gongWeiName) {
+            case "遷移":
+                return "身遷"
+            case "福德":
+                return "身福"
+            case "命宮":
+                return "身命"
+            case "財帛":
+                return "身帛"
+            case "夫妻":
+                return "身夫"
+            }
+            return gongWeiName
+        },
         fourStars: (stars) => {
             let result = {}
             stars.forEach(star=>{
@@ -264,7 +282,7 @@ export default {
                 return "red--text text--darken-1"
             default:
                 return "blue-grey--text text--lighten-1"
-            } 
+            }
         }
     }
 }

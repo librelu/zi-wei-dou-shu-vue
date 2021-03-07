@@ -113,9 +113,16 @@
 </template>
 
 <style>
+/* hardcoding the screen to fix the star-board out of range */
+.v-main, .v-toolbar{
+    min-width: 730px;
+}
+.star-board{
+    min-width: 730px;
+}
 .star-row{
     display: flex;
-    min-width: 550px;
+    min-width: 730px;
 }
 .profile-info label {
     text-align-last:justify;
@@ -247,6 +254,7 @@ export default {
     beforeCreate(){
         if (this.$store.getters.board.blocks === undefined || this.$store.getters.board.blocks === {}){
                 this.$router.push({name:"ZiWeiBoard"})
+                return
         }
     },
     mounted(){
