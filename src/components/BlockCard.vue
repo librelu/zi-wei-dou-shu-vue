@@ -4,8 +4,17 @@
             <div class="star-block text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
                     <div :class="getFontStyle(star.star_type)" :key="idx">
-                        <span class="write-vertical">{{star.name}}</span>
-                        <span class="miao-xian write-vertical text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</span>
+                        <template v-if="star.board_type === 'tian_board'">
+                            <div class="write-vertical">{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">年{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">大{{star.name}}</div>
+                        </template>
+                        <div class="miao-xian write-vertical text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</div>
+                        <div class="four-start write-vertical text-sm-body-2 font-weight-light deep-purple--text text--accent-2" v-show="star.miao_xian.length > 0">{{star.four_star}}</div>
                     </div>
                 </template>
             </div>
@@ -142,9 +151,9 @@
     justify-content: flex-end;
 }
 .write-vertical{
-    writing-mode: vertical-lr;
-    vertical-align: middle;
-    padding: 1px;
+    display: block;
+    width: 10px;
+    margin: 3px;
 }
 .gong-wei-block{
     display: flex;
