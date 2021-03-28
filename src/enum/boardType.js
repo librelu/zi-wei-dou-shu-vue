@@ -3,6 +3,7 @@ let BoardType = {
     YearBoard: "YearBoard",
     TenYearsBoard: "TenYearsBoard",
     MonthBoard: "MonthBoard",
+    DateBoard: "DateBoard",
 }
 
 export default BoardType

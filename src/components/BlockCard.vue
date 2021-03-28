@@ -10,8 +10,11 @@
                         <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">年{{star.name}}</div>
                         </template>
-                         <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
+                        <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">月{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'date_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">日{{star.name}}</div>
                         </template>
                         <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">大{{star.name}}</div>
@@ -37,6 +40,9 @@
                         </template>
                         <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">月{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'date_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">日{{star.name}}</div>
                         </template>
                         <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">大{{star.name}}</div>
@@ -68,6 +74,11 @@
                             月{{star.name}}
                         </span>
                     </template>
+                    <template v-if="star.board_type === 'date_board' && star.star_type !== '流年干星'">
+                        <span :class="getFontStyle(star.star_type)" :key="'date_board_board-other-stars'+idx">
+                            日{{star.name}}
+                        </span>
+                    </template>
                     <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
                         <span :class="getFontStyle(star.star_type)" :key="'ten_years_board-other-stars'+idx">
                             大{{star.name}}
@@ -85,6 +96,11 @@
                     <template v-if="gong.type === 'month_board'">
                         <span class="text-sm-caption month_gong-wei-name white--text" :key="'month_board'+idx">
                             月{{gong.name}}
+                        </span>
+                    </template>
+                    <template v-if="gong.type === 'date_board'">
+                        <span class="text-sm-caption date_gong-wei-name white--text" :key="'date_board'+idx">
+                            日{{gong.name}}
                         </span>
                     </template>
                     <template v-if="gong.type === 'ten_years_board'">
@@ -110,6 +126,11 @@
                         <template v-if="boardType === 'month_board'">
                             <template v-for="(_, fourStar, idx) in fourStarsObj">
                                 <span class="green--text darken-4" :key="'month_board-four-stars'+idx">{{fourStar}}</span>
+                            </template>
+                        </template>
+                        <template v-if="boardType === 'date_board'">
+                            <template v-for="(_, fourStar, idx) in fourStarsObj">
+                                <span class="pink--text darken-4" :key="'date_board-four-stars'+idx">{{fourStar}}</span>
                             </template>
                         </template>
                         <template v-if="boardType === 'ten_years_board'">
@@ -187,6 +208,12 @@
 }
 .month_gong-wei-name{
     background: #2d8c28;
+    border-radius: 3px;
+    padding: 2px 3px;
+    margin: 3px 0px;
+}
+.date_gong-wei-name{
+    background: #d81b60;
     border-radius: 3px;
     padding: 2px 3px;
     margin: 3px 0px;
