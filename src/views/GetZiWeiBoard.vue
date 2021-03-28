@@ -1,114 +1,116 @@
 <template>
     <div class="star-board">
-        <div class="star-row">
-            <BlockCard
-                :blockLocation="blocks[5].location"
-                :stars="blocks[5].stars"
-                :gongWei="blocks[5].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 5"
-                :tenYearsRound="blocks[5].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[6].location"
-                :stars="blocks[6].stars"
-                :gongWei="blocks[6].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 6"
-                :tenYearsRound="blocks[6].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[7].location"
-                :stars="blocks[7].stars"
-                :gongWei="blocks[7].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 7"
-                :tenYearsRound="blocks[7].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[8].location"
-                :stars="blocks[8].stars"
-                :gongWei="blocks[8].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 8"
-                :tenYearsRound="blocks[8].ten_years_round"
-            ></BlockCard>
-        </div>
-        <div class="star-row">
-            <BlockCard
-                :blockLocation="blocks[4].location"
-                :stars="blocks[4].stars"
-                :gongWei="blocks[4].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 4"
-                :tenYearsRound="blocks[4].ten_years_round"
-            ></BlockCard>
-            <div class="profile-start text-caption blue-grey--text text--darken-1 " align-self="end">
-                <v-col><BoardMenu></BoardMenu></v-col>
-                <v-col class="pannel-min-height"><RotateIndexPanel v-if="isRoate"></RotateIndexPanel></v-col>
-                <div class="profile-info">
-                    <div><label>陽曆</label>: {{board.birthday}}</div>
-                    <div><label>陰曆</label>: {{lunaBirthdayYear}}{{lunaBirthdayDate}}</div>
-                    <div><label>姓別</label>: {{board.gender}}</div>
-                </div>
+        <template v-if='blocks'>
+            <div class="star-row">
+                <BlockCard
+                    :blockLocation="blocks[5].location"
+                    :stars="blocks[5].stars"
+                    :gongWei="blocks[5].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 5"
+                    :tenYearsRound="blocks[5].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[6].location"
+                    :stars="blocks[6].stars"
+                    :gongWei="blocks[6].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 6"
+                    :tenYearsRound="blocks[6].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[7].location"
+                    :stars="blocks[7].stars"
+                    :gongWei="blocks[7].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 7"
+                    :tenYearsRound="blocks[7].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[8].location"
+                    :stars="blocks[8].stars"
+                    :gongWei="blocks[8].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 8"
+                    :tenYearsRound="blocks[8].ten_years_round"
+                ></BlockCard>
             </div>
-            <BlockCard
-                :blockLocation="blocks[9].location"
-                :stars="blocks[9].stars"
-                :gongWei="blocks[9].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 9"
-                :tenYearsRound="blocks[9].ten_years_round"
-            ></BlockCard>
-        </div>
-        <div class="star-row">
-            <BlockCard
-                :blockLocation="blocks[3].location"
-                :stars="blocks[3].stars"
-                :gongWei="blocks[3].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 3"
-                :tenYearsRound="blocks[3].ten_years_round"
-            ></BlockCard>
-            <div class="profile-end text-caption blue-grey--text text--darken-1" align-self="end">
-                <div class="profile-info">
-                    <div><label>局數</label>: {{board.ming_ju}}{{board.ming_ju_value}}局</div>
-                    <div><label>身主</label>: {{board.shen_zhu}}</div>
-                    <div><label>命主</label>: {{board.ming_zhu}}</div>
+            <div class="star-row">
+                <BlockCard
+                    :blockLocation="blocks[4].location"
+                    :stars="blocks[4].stars"
+                    :gongWei="blocks[4].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 4"
+                    :tenYearsRound="blocks[4].ten_years_round"
+                ></BlockCard>
+                <div class="profile-start text-caption blue-grey--text text--darken-1 " align-self="end">
+                    <v-col><BoardMenu></BoardMenu></v-col>
+                    <v-col class="pannel-min-height"><RotateIndexPanel v-if="isRoate"></RotateIndexPanel></v-col>
+                    <div class="profile-info">
+                        <div><label>陽曆</label>: {{board.birthday}}</div>
+                        <div><label>陰曆</label>: {{lunaBirthdayYear}}{{lunaBirthdayDate}}</div>
+                        <div><label>姓別</label>: {{board.gender}}</div>
+                    </div>
                 </div>
+                <BlockCard
+                    :blockLocation="blocks[9].location"
+                    :stars="blocks[9].stars"
+                    :gongWei="blocks[9].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 9"
+                    :tenYearsRound="blocks[9].ten_years_round"
+                ></BlockCard>
             </div>
-            <BlockCard
-                :blockLocation="blocks[10].location"
-                :stars="blocks[10].stars"
-                :gongWei="blocks[10].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 10"
-                :tenYearsRound="blocks[10].ten_years_round"
-            ></BlockCard>
-        </div>
-        <div class="star-row">
-            <BlockCard
-                :blockLocation="blocks[2].location"
-                :stars="blocks[2].stars"
-                :gongWei="blocks[2].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 2"
-                :tenYearsRound="blocks[2].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[1].location"
-                :stars="blocks[1].stars"
-                :gongWei="blocks[1].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 1"
-                :tenYearsRound="blocks[1].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[0].location"
-                :stars="blocks[0].stars"
-                :gongWei="blocks[0].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 0"
-                :tenYearsRound="blocks[0].ten_years_round"
-            ></BlockCard>
-            <BlockCard
-                :blockLocation="blocks[11].location"
-                :stars="blocks[11].stars"
-                :gongWei="blocks[11].gong_wei"
-                :isShenGongLocation="board.shen_gong_location === 11"
-                :tenYearsRound="blocks[11].ten_years_round"
-            ></BlockCard>
-        </div>
-        <canvas id="star_connection_display"></canvas>
+            <div class="star-row">
+                <BlockCard
+                    :blockLocation="blocks[3].location"
+                    :stars="blocks[3].stars"
+                    :gongWei="blocks[3].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 3"
+                    :tenYearsRound="blocks[3].ten_years_round"
+                ></BlockCard>
+                <div class="profile-end text-caption blue-grey--text text--darken-1" align-self="end">
+                    <div class="profile-info">
+                        <div><label>局數</label>: {{board.ming_ju}}{{board.ming_ju_value}}局</div>
+                        <div><label>身主</label>: {{board.shen_zhu}}</div>
+                        <div><label>命主</label>: {{board.ming_zhu}}</div>
+                    </div>
+                </div>
+                <BlockCard
+                    :blockLocation="blocks[10].location"
+                    :stars="blocks[10].stars"
+                    :gongWei="blocks[10].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 10"
+                    :tenYearsRound="blocks[10].ten_years_round"
+                ></BlockCard>
+            </div>
+            <div class="star-row">
+                <BlockCard
+                    :blockLocation="blocks[2].location"
+                    :stars="blocks[2].stars"
+                    :gongWei="blocks[2].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 2"
+                    :tenYearsRound="blocks[2].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[1].location"
+                    :stars="blocks[1].stars"
+                    :gongWei="blocks[1].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 1"
+                    :tenYearsRound="blocks[1].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[0].location"
+                    :stars="blocks[0].stars"
+                    :gongWei="blocks[0].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 0"
+                    :tenYearsRound="blocks[0].ten_years_round"
+                ></BlockCard>
+                <BlockCard
+                    :blockLocation="blocks[11].location"
+                    :stars="blocks[11].stars"
+                    :gongWei="blocks[11].gong_wei"
+                    :isShenGongLocation="board.shen_gong_location === 11"
+                    :tenYearsRound="blocks[11].ten_years_round"
+                ></BlockCard>
+            </div>
+            <canvas id="star_connection_display"></canvas>
+        </template>
     </div>
 </template>
 
@@ -258,6 +260,9 @@ export default {
         }
     },
     mounted(){
+        if (this.$store.getters.board.blocks === undefined || this.$store.getters.board.blocks === {}){
+                return
+        }
         let mainStarConnections = this.$store.getters.board.main_star_connection
         let mingGongLocation = this.$store.getters.board.ming_gong_location
         drawCanvas(mainStarConnections, mingGongLocation)

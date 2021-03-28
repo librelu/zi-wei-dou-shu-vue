@@ -3,12 +3,15 @@
         <div class="stars-row">
             <div class="star-block text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).leftAttachedStars">
-                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                    <div :class="getFontStyle(star.star_type)" :key="'leftAttachedStars'+idx">
                         <template v-if="star.board_type === 'tian_board'">
                             <div class="write-vertical">{{star.name}}</div>
                         </template>
                         <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">年{{star.name}}</div>
+                        </template>
+                         <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">月{{star.name}}</div>
                         </template>
                         <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">大{{star.name}}</div>
@@ -20,7 +23,7 @@
             </div>
             <div class="main-stars text-md-body-1 text-sm-caption text-caption font-weight-bold">
                 <template v-for="(star, idx) in sortStars(stars).mainStars">
-                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                    <div :class="getFontStyle(star.star_type)" :key="'main-stars'+idx">
                         <div class="write-vertical">{{star.name}}</div>
                         <div class="miao-xian text-sm-body-2 font-weight-light green--text text--lighten-1" v-show="star.miao_xian.length > 0">{{star.miao_xian}}</div>
                     </div>
@@ -28,9 +31,12 @@
             </div>
             <div class="right-side-stars text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).rightAttachedStars">
-                    <div :class="getFontStyle(star.star_type)" :key="idx">
+                    <div :class="getFontStyle(star.star_type)" :key="'right-side-stars'+idx">
                         <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">年{{star.name}}</div>
+                        </template>
+                        <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
+                            <div class="write-vertical">月{{star.name}}</div>
                         </template>
                         <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
                             <div class="write-vertical">大{{star.name}}</div>
@@ -48,17 +54,22 @@
             <div class="other-stars text-sm-caption smallest-text-size">
                 <template v-for="(star, idx) in sortStars(stars).otherStars">
                     <template v-if="star.board_type === 'tian_board'">
-                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                        <span :class="getFontStyle(star.star_type)" :key="'tian_board-other-stars'+idx">
                             {{star.name}}
                         </span>
                     </template>
                     <template v-if="star.board_type === 'year_board' && star.star_type !== '流年干星'">
-                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                        <span :class="getFontStyle(star.star_type)" :key="'year_board-other-stars'+idx">
                             年{{star.name}}
                         </span>
                     </template>
+                    <template v-if="star.board_type === 'month_board' && star.star_type !== '流年干星'">
+                        <span :class="getFontStyle(star.star_type)" :key="'month_board_board-other-stars'+idx">
+                            月{{star.name}}
+                        </span>
+                    </template>
                     <template v-if="star.board_type === 'ten_years_board' && star.star_type !== '流年干星'">
-                        <span :class="getFontStyle(star.star_type)" :key="idx">
+                        <span :class="getFontStyle(star.star_type)" :key="'ten_years_board-other-stars'+idx">
                             大{{star.name}}
                         </span>
                     </template>
@@ -67,17 +78,22 @@
             <div class="gong-wei-block text-sm-caption smallest-text-size justify-center">
                 <template v-for="(gong, idx) in gongWei">
                     <template v-if="gong.type === 'year_board'">
-                        <span class="text-sm-caption year_gong-wei-name white--text" :key="idx">
+                        <span class="text-sm-caption year_gong-wei-name white--text" :key="'year_board'+idx">
                             年{{gong.name}}
                         </span>
                     </template>
+                    <template v-if="gong.type === 'month_board'">
+                        <span class="text-sm-caption month_gong-wei-name white--text" :key="'month_board'+idx">
+                            月{{gong.name}}
+                        </span>
+                    </template>
                     <template v-if="gong.type === 'ten_years_board'">
-                        <span class="text-sm-caption year_gong-wei-name white--text" :key="idx">
+                        <span class="text-sm-caption ten_years_gong-wei-name white--text" :key="'ten_years_board'+idx">
                             大{{gong.name}}
                         </span>
                     </template>
                     <template v-if="gong.type === 'tian_board'">
-                        <span class="text-sm-caption tian_gong-wei-name white--text" :key="idx">
+                        <span class="text-sm-caption tian_gong-wei-name white--text" :key="'tian_board'+idx">
                             {{tainBoardGongWeiName(gong.name, isShenGongLocation)}}
                         </span>
                     </template>
@@ -87,18 +103,23 @@
                 <div class="four-stars-block">
                     <template v-for="(fourStarsObj , boardType) in fourStars(stars)">
                         <template v-if="boardType === 'year_board'">
-                            <template v-for="(_, fourStar) in fourStarsObj">
-                                <span class="blue--text" :key="Math.random()+fourStar">年{{fourStar}}</span>
+                            <template v-for="(_, fourStar, idx) in fourStarsObj">
+                                <span class="blue--text" :key="'year_board-four-stars'+idx">年{{fourStar}}</span>
+                            </template>
+                        </template>
+                        <template v-if="boardType === 'month_board'">
+                            <template v-for="(_, fourStar, idx) in fourStarsObj">
+                                <span class="green--text darken-4" :key="'month_board-four-stars'+idx">{{fourStar}}</span>
                             </template>
                         </template>
                         <template v-if="boardType === 'ten_years_board'">
-                            <template v-for="(_, fourStar) in fourStarsObj">
-                                <span class="blue--text" :key="Math.random()+fourStar">大{{fourStar}}</span>
+                            <template v-for="(_, fourStar, idx) in fourStarsObj">
+                                <span class="orange--text darken-4" :key="'ten_years_board-four-stars'+idx">大{{fourStar}}</span>
                             </template>
                         </template>
                         <template v-if="boardType === 'tian_board'">
-                            <template v-for="(_, fourStar) in fourStarsObj">
-                                <span class="deep-purple--text" :key="Math.random()+fourStar">{{fourStar}}</span>
+                            <template v-for="(_, fourStar, idx) in fourStarsObj">
+                                <span class="deep-purple--text" :key="'tian_board-four-stars'+idx">{{fourStar}}</span>
                             </template>
                         </template>
                     </template>
@@ -160,6 +181,18 @@
 }
 .tian_gong-wei-name{
     background: #9300fc;
+    border-radius: 3px;
+    padding: 2px 3px;
+    margin: 3px 0px;
+}
+.month_gong-wei-name{
+    background: #2d8c28;
+    border-radius: 3px;
+    padding: 2px 3px;
+    margin: 3px 0px;
+}
+.ten_years_gong-wei-name{
+    background: #ff9800;
     border-radius: 3px;
     padding: 2px 3px;
     margin: 3px 0px;

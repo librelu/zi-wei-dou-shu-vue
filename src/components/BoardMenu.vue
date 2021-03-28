@@ -57,6 +57,14 @@ export default {
                     })
                     break
                 case 2:
+                    this.$store.dispatch('setMonthBoard', {
+                        gender: this.$store.getters.gender,
+                        birthYear: this.$store.getters.birthday.birthYear,
+                        birthMonth: this.$store.getters.birthday.birthMonth,
+                        birthDate: this.$store.getters.birthday.birthDate,
+                        birthHour: this.$store.getters.birthday.birthHour,
+                        index: 1,
+                    })
                     break
                 case 3:
                     break

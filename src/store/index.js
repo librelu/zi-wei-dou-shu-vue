@@ -18,6 +18,7 @@ export default new Vuex.Store({
       originBoard: {},
       yearBoard: {},
       tenYearsBoard: {},
+      monthBoard : {},
     }
   },
   mutations: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     modifyYearBoard(state, payload) {
       state.currentUser.yearBoard = payload
+    },
+    modifyMonthBoard(state, payload) {
+      state.currentUser.monthBoard = payload
     },
     modifyTenYearsBoard(state, payload) {
       state.currentUser.tenYearsBoard = payload
@@ -86,6 +90,26 @@ export default new Vuex.Store({
         state.commit('modifyBoard', {
           board: resp.data,
           boardType: BoardType.YearBoard,
+      })
+      }).catch((err) => {
+        console.log(err)
+        state.error = err
+      })
+    },
+    setMonthBoard(state, payload) {
+      return Vue.axios.get('month-board', {params: {
+        gender: payload.gender,
+        birthYear: payload.birthYear,
+        birthMonth: payload.birthMonth,
+        birthDate: payload.birthDate,
+        birthHour: payload.birthHour,
+        timezone: (new Date()).getTimezoneOffset(),
+        index: payload.index -1,
+      }}).then((resp)=>{
+        state.commit('modifyMonthBoard', resp.data)
+        state.commit('modifyBoard', {
+          board: resp.data,
+          boardType: BoardType.MonthBoard,
       })
       }).catch((err) => {
         console.log(err)
