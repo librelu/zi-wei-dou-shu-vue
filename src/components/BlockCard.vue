@@ -310,20 +310,22 @@ export default {
         },
         fourStars: (stars) => {
             let result = {}
-            stars.forEach(star=>{
-                if (star.star_type === "流年干星") {
-                    if (result[star.board_type] === undefined) {
-                        result[star.board_type] = {}
+            if (stars !== null){
+                stars.forEach(star=>{
+                    if (star.star_type === "流年干星") {
+                        if (result[star.board_type] === undefined) {
+                            result[star.board_type] = {}
+                        }
+                        result[star.board_type][star.name] = true
                     }
-                    result[star.board_type][star.name] = true
-                }
-                if (star.four_star !== "" && star.four_star !== undefined) {
-                    if (result[star.board_type] === undefined) {
-                        result[star.board_type] = {}
+                    if (star.four_star !== "" && star.four_star !== undefined) {
+                        if (result[star.board_type] === undefined) {
+                            result[star.board_type] = {}
+                        }
+                        result[star.board_type][star.four_star] = true
                     }
-                    result[star.board_type][star.four_star] = true
-                }
-            })
+                })
+            }
             return result
         }, 
         sortStars: (stars) => {
@@ -331,25 +333,26 @@ export default {
             let rightAttachedStars = []
             let leftAttachedStars = []
             let otherStars = []
-            stars.forEach((star)=>{
+            if (stars !== null) {
+                stars.forEach((star)=>{
                 switch(star.star_type) {
-                case "十四主星":
-                    mainStars.push(star)
-                    break
-                case "流年干星":
-                    rightAttachedStars.push(star)
-                    break
-                case "右輔星":
-                    rightAttachedStars.push(star)
-                    break
-                case "左輔星":
-                    leftAttachedStars.push(star)
-                    break
-                default:
-                    otherStars.push(star)
-                    break
-                }
-            })
+                    case "十四主星":
+                        mainStars.push(star)
+                        break
+                    case "流年干星":
+                        rightAttachedStars.push(star)
+                        break
+                    case "右輔星":
+                        rightAttachedStars.push(star)
+                        break
+                    case "左輔星":
+                        leftAttachedStars.push(star)
+                        break
+                    default:
+                        otherStars.push(star)
+                        break
+                }})
+            }
             return {
                 mainStars,
                 rightAttachedStars,
