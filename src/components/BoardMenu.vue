@@ -28,7 +28,7 @@
 
 <script>
 export default {
-    data: ()=>{
+    data(){
         return {
             boardTypeIndex: 0,
             boardTypes : [
