@@ -289,7 +289,7 @@ export default {
             return this.board.luna_birthday.split("年")[1]
         },
         isRoate(){
-            return BoardType[this.$store.getters.boardType] !== "OriginBoard" && BoardType[this.$store.getters.boardType] || false
+            return BoardType[this.$store.getters.boardType] !== "TianBoard" && BoardType[this.$store.getters.boardType] || false
         },
         board(){
             return this.$store.getters.board

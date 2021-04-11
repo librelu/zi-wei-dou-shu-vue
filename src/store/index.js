@@ -15,7 +15,7 @@ export default new Vuex.Store({
       birthHour: 0,
       boardType: "",
       board: {},
-      originBoard: {},
+      tianBoard: {},
       yearBoard: {},
       tenYearsBoard: {},
       monthBoard : {},
@@ -32,8 +32,8 @@ export default new Vuex.Store({
       state.currentUser.birthDate = payload.birthDate
       state.currentUser.birthHour =  payload.birthHour
     },
-    modifyOriginBoard(state, payload) {
-      state.currentUser.originBoard = payload
+    modifyTianBoard(state, payload) {
+      state.currentUser.tianBoard = payload
     },
     modifyYearBoard(state, payload) {
       state.currentUser.yearBoard = payload
@@ -64,20 +64,20 @@ export default new Vuex.Store({
         birthHour: payload.birthHour,
         timezone: (new Date()).getTimezoneOffset(),
       }}).then((resp)=>{
-        state.commit('modifyOriginBoard', resp.data)
+        state.commit('modifyTianBoard', resp.data)
         state.commit('modifyBoard', {
           board: resp.data,
-          boardType: BoardType.OriginBoard,
+          boardType: BoardType.TianBoard,
       })
       }).catch((err) => {
         console.log(err)
         state.error = err
       })
     },
-    setOriginBoard(state) {
+    setTianBoard(state) {
       state.commit('modifyBoard', {
-        board: this.getters.originBoard,
-        boardType: BoardType.OriginBoard,
+        board: this.getters.tianBoard,
+        boardType: BoardType.TianBoard,
       })
     }, 
     setYearBoard(state, payload) {
@@ -167,8 +167,8 @@ export default new Vuex.Store({
     boardType: state=>{
       return state.currentUser.boardType
     },
-    originBoard: state=>{
-      return state.currentUser.originBoard
+    tianBoard: state=>{
+      return state.currentUser.tianBoard
     },
     yearBoard: state=>{
       return state.currentUser.yearBoard

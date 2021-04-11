@@ -44,7 +44,7 @@ export default {
         boardTypeIndex(){
             switch(this.boardTypeIndex){
                 case 0:
-                    this.$store.dispatch('setOriginBoard')
+                    this.$store.dispatch('setTianBoard')
                     break
                 case 1:
                     this.$store.dispatch('setYearBoard', {

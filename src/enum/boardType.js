@@ -1,5 +1,5 @@
 let BoardType = {
-    OriginBoard: "OriginBoard",
+    TianBoard: "TianBoard",
     YearBoard: "YearBoard",
     TenYearsBoard: "TenYearsBoard",
     MonthBoard: "MonthBoard",
