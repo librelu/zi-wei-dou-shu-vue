@@ -20,7 +20,8 @@
                   v-model="birthDate"
                   label="生日年月"
                   prepend-icon="mdi-calendar"
-                  :rules="[v => !!v || '請選擇生日年月!']"
+                  @focus='()=>{focusCalendar = true}'
+                  :rules="[validateCalendar]"
                   readonly
                   v-bind="attrs"
                   v-on="on"
@@ -41,7 +42,7 @@
           <v-select
             v-model="birthTime"
             :items="birthTimes"
-            :rules="[v => !!v || '請選擇生時!']"
+            :rules="[v => v > -1 || '請選擇生時!']"
             prepend-icon="mdi-calendar"
             label="生時"
             required
@@ -53,7 +54,7 @@
           <v-select
             v-model="gender"
             :items="genders"
-            :rules="[v => !!v || '請選擇性別!']"
+            :rules="[v => v > -1 || '請選擇性別!']"
             prepend-icon="mdi-human-male-female"
             label="性別"
             required
@@ -86,12 +87,13 @@ export default {
   data: () => {
     return {
       genders: getGenders(),
-      gender: false,
+      gender: -1,
       birthDate: null,
       menu: false,
-      birthTime: null,
+      birthTime: -1,
       valid: true,
       birthTimes: getBirthTime(),
+      focusCalendar: false,
     }
   },
   watch: {
@@ -100,7 +102,14 @@ export default {
     }
   },
   methods: {
+    validateCalendar(value){
+      if (value || this.focusCalendar){
+        return true
+      }
+      return '請選擇生日年月!'
+    },
     save (date) {
+      this.focusCalendar = false
       this.$refs.menu.save(date)
     },
     validate () {

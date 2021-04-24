@@ -161,118 +161,29 @@ import BlockCard from '@/components/BlockCard.vue'
 import BoardMenu from '@/components/BoardMenu.vue'
 import BoardType from '@/enum/boardType'
 
-let locationMap = [10, 9, 8, 6, 4, 0, 1, 2, 3, 5, 7, 11]
-function getBlockLocation(blockIndex){
-    let block = document.getElementsByClassName('star-main-block')[blockIndex].getBoundingClientRect()
-    let canvas = document.getElementById('star_connection_display')
-    let result = {
-        x: 0,
-        y: 0,
-    }
-    switch (locationMap[blockIndex]) {
-        case 0:
-            result.x = 0
-            result.y = 0
-            break
-        case 1:
-            result.x = block.width / 2
-            result.y = 0
-            break
-        case 2:
-            result.x = canvas.width - (block.width / 2)
-            result.y = 0
-            break
-        case 3:
-            result.x = canvas.width
-            result.y = 0
-            break
-        case 4:
-            result.x = 0
-            result.y = block.height / 2
-            break
-        case 5:
-            result.x = canvas.width
-            result.y = block.height / 2
-            break
-        case 6:
-            result.x = 0
-            result.y = canvas.height - (block.height / 2) 
-            break
-        case 7:
-            result.x = canvas.width
-            result.y = canvas.height - (block.height / 2)
-            break
-        case 8:
-            result.x = 0
-            result.y = canvas.height
-            break
-        case 9:
-            result.x = block.width / 2
-            result.y = canvas.height
-            break
-        case 10:
-            result.x = canvas.width - (block.width / 2)
-            result.y = canvas.height
-            break
-        case 11:
-            result.x = canvas.width
-            result.y = canvas.height
-            break
-    }
-    return result
-}
-function drawCanvas(locations, mingGongLocation){
-    let canvas = document.getElementById('star_connection_display')
-    let firstStarBlock = document.getElementsByClassName('star-main-block')[0]
-    canvas.width = (document.getElementsByClassName('profile-end')[0].clientWidth)
-    canvas.height = (document.getElementsByClassName('profile-end')[0].clientHeight*2)
-    let overlayX = parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingLeft, 10) + 
-        parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).marginLeft, 10)
-    let overlayY = getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingTop
-    let positionX = firstStarBlock.getBoundingClientRect().width + parseInt(overlayX, 10)
-    let positionY = firstStarBlock.getBoundingClientRect().height + parseInt(overlayY, 10)
-    canvas.style.left = `${positionX}px`
-    canvas.style.top = `${positionY}px`
-    if (canvas.getContext){
-        let ctx = canvas.getContext('2d');
-        ctx.strokeStyle = "rgba(255,0,0,0.5)";
-        // error handling when layout is not ready
-        if (locations.length <= 0){
-            return
-        }
-        locations.forEach((v)=>{
-            let startPosition = getBlockLocation(mingGongLocation)
-            let endPosition = getBlockLocation(v)
-            ctx.beginPath()
-            ctx.moveTo(startPosition.x, startPosition.y)
-            ctx.lineTo(endPosition.x, endPosition.y)
-            ctx.stroke()
-        })
-    }
-}
 export default {
     data() {
         return {
             blocks: this.$store.getters.tianBoard.blocks,
             board: this.$store.getters.tianBoard,
+            locationMap: [10, 9, 8, 6, 4, 0, 1, 2, 3, 5, 7, 11],
         }
     },
     mounted(){
         if (this.board === undefined || this.board === {}){
-            this.$router.push({name:"ZiWeiBoard"})
-            return
+            return this.$router.push({name:"ZiWeiBoard"})
         }
         let mainStarConnections = this.board.main_star_connection
         let mingGongLocation = this.board.ming_gong_location
-        drawCanvas(mainStarConnections, mingGongLocation)
+        this.drawCanvas(mainStarConnections, mingGongLocation)
         window.addEventListener("gestureend", function(){
-            drawCanvas(mainStarConnections, mingGongLocation)
+            this.drawCanvas(mainStarConnections, mingGongLocation)
         })
         window.addEventListener("resize", function(){
-            drawCanvas(mainStarConnections, mingGongLocation)
+            this.drawCanvas(mainStarConnections, mingGongLocation)
         })
         window.addEventListener("scroll", function(){
-            drawCanvas(mainStarConnections, mingGongLocation)
+            this.drawCanvas(mainStarConnections, mingGongLocation)
         })
     },
     components: {
@@ -288,6 +199,97 @@ export default {
         },
     },
     methods: {
+        drawCanvas(locations, mingGongLocation){
+            let canvas = document.getElementById('star_connection_display')
+            let firstStarBlock = document.getElementsByClassName('star-main-block')[0]
+            if (document.getElementsByClassName('profile-end').length === 0){
+                return this.$router.push({name:"ZiWeiBoard"})
+            }
+            canvas.width = (document.getElementsByClassName('profile-end')[0].clientWidth)
+            canvas.height = (document.getElementsByClassName('profile-end')[0].clientHeight*2)
+            let overlayX = parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingLeft, 10) + 
+                parseInt(getComputedStyle(document.getElementsByClassName('star-board')[0]).marginLeft, 10)
+            let overlayY = getComputedStyle(document.getElementsByClassName('star-board')[0]).paddingTop
+            let positionX = firstStarBlock.getBoundingClientRect().width + parseInt(overlayX, 10)
+            let positionY = firstStarBlock.getBoundingClientRect().height + parseInt(overlayY, 10)
+            canvas.style.left = `${positionX}px`
+            canvas.style.top = `${positionY}px`
+            if (canvas.getContext){
+                let ctx = canvas.getContext('2d');
+                ctx.strokeStyle = "rgba(255,0,0,0.5)";
+                // error handling when layout is not ready
+                if (locations.length <= 0){
+                    return
+                }
+                locations.forEach((v)=>{
+                    let startPosition = this.getBlockLocation(mingGongLocation)
+                    let endPosition = this.getBlockLocation(v)
+                    ctx.beginPath()
+                    ctx.moveTo(startPosition.x, startPosition.y)
+                    ctx.lineTo(endPosition.x, endPosition.y)
+                    ctx.stroke()
+                })
+            }
+        },
+        getBlockLocation(blockIndex){
+            let block = document.getElementsByClassName('star-main-block')[blockIndex].getBoundingClientRect()
+            let canvas = document.getElementById('star_connection_display')
+            let result = {
+                x: 0,
+                y: 0,
+            }
+            switch (this.locationMap[blockIndex]) {
+                case 0:
+                    result.x = 0
+                    result.y = 0
+                    break
+                case 1:
+                    result.x = block.width / 2
+                    result.y = 0
+                    break
+                case 2:
+                    result.x = canvas.width - (block.width / 2)
+                    result.y = 0
+                    break
+                case 3:
+                    result.x = canvas.width
+                    result.y = 0
+                    break
+                case 4:
+                    result.x = 0
+                    result.y = block.height / 2
+                    break
+                case 5:
+                    result.x = canvas.width
+                    result.y = block.height / 2
+                    break
+                case 6:
+                    result.x = 0
+                    result.y = canvas.height - (block.height / 2) 
+                    break
+                case 7:
+                    result.x = canvas.width
+                    result.y = canvas.height - (block.height / 2)
+                    break
+                case 8:
+                    result.x = 0
+                    result.y = canvas.height
+                    break
+                case 9:
+                    result.x = block.width / 2
+                    result.y = canvas.height
+                    break
+                case 10:
+                    result.x = canvas.width - (block.width / 2)
+                    result.y = canvas.height
+                    break
+                case 11:
+                    result.x = canvas.width
+                    result.y = canvas.height
+                    break
+            }
+            return result
+        },
         mergeBoard(currentBoard, targetBlocks){
             for (let i = 0; i < targetBlocks.length; i ++){
                 if (targetBlocks[i].gong_wei){
