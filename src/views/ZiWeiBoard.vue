@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import BoardType from '@/enum/boardType'
 export default {
   data: () => {
     return {
@@ -121,6 +122,10 @@ export default {
             birthHour: this.birthTime,
             timeZone: this.timeZone,
       }).then(()=>{
+          this.$store.dispatch({
+            type: 'setBoardType',
+            boardType: BoardType.TianBoard,
+          })
           this.$router.push({name:"GetZiWeiBoard"})
       })
     },

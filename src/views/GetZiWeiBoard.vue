@@ -40,8 +40,7 @@
                     :tenYearsRound="blocks[4].ten_years_round"
                 ></BlockCard>
                 <div class="profile-start text-caption blue-grey--text text--darken-1 " align-self="end">
-                    <v-col><BoardMenu></BoardMenu></v-col>
-                    <v-col class="pannel-min-height"><RotateIndexPanel v-if="isRoate"></RotateIndexPanel></v-col>
+                    <v-col><BoardMenu @trigger="modifyBlocks"></BoardMenu></v-col>
                     <div class="profile-info">
                         <div><label>陽曆</label>: {{board.birthday}}</div>
                         <div><label>陰曆</label>: {{lunaBirthdayYear}}{{lunaBirthdayDate}}</div>
@@ -161,7 +160,6 @@
 import BlockCard from '@/components/BlockCard.vue'
 import BoardMenu from '@/components/BoardMenu.vue'
 import BoardType from '@/enum/boardType'
-import RotateIndexPanel from '@/components/RotateIndexPanel.vue'
 
 let locationMap = [10, 9, 8, 6, 4, 0, 1, 2, 3, 5, 7, 11]
 function getBlockLocation(blockIndex){
@@ -253,18 +251,19 @@ function drawCanvas(locations, mingGongLocation){
     }
 }
 export default {
-    beforeCreate(){
-        if (this.$store.getters.board.blocks === undefined || this.$store.getters.board.blocks === {}){
-                this.$router.push({name:"ZiWeiBoard"})
-                return
+    data() {
+        return {
+            blocks: this.$store.getters.tianBoard.blocks,
+            board: this.$store.getters.tianBoard,
         }
     },
     mounted(){
-        if (this.$store.getters.board.blocks === undefined || this.$store.getters.board.blocks === {}){
-                return
+        if (this.board === undefined || this.board === {}){
+            this.$router.push({name:"ZiWeiBoard"})
+            return
         }
-        let mainStarConnections = this.$store.getters.board.main_star_connection
-        let mingGongLocation = this.$store.getters.board.ming_gong_location
+        let mainStarConnections = this.board.main_star_connection
+        let mingGongLocation = this.board.ming_gong_location
         drawCanvas(mainStarConnections, mingGongLocation)
         window.addEventListener("gestureend", function(){
             drawCanvas(mainStarConnections, mingGongLocation)
@@ -279,7 +278,6 @@ export default {
     components: {
         BlockCard,
         BoardMenu,
-        RotateIndexPanel
     },
     computed: {
         lunaBirthdayYear(){
@@ -288,15 +286,44 @@ export default {
         lunaBirthdayDate(){
             return this.board.luna_birthday.split("年")[1]
         },
-        isRoate(){
-            return BoardType[this.$store.getters.boardType] !== "TianBoard" && BoardType[this.$store.getters.boardType] || false
-        },
-        board(){
-            return this.$store.getters.board
-        },
-        blocks() {
-            return this.$store.getters.board.blocks
-        }
     },
+    methods: {
+        mergeBoard(currentBoard, targetBlocks){
+            for (let i = 0; i < targetBlocks.length; i ++){
+                if (targetBlocks[i].gong_wei){
+                    currentBoard[i].gong_wei.push(...JSON.parse(JSON.stringify(targetBlocks[i].gong_wei)))
+                }
+                if (targetBlocks[i].stars) {
+                    currentBoard[i].stars.push(...JSON.parse(JSON.stringify(targetBlocks[i].stars)))
+                }
+            }
+            return currentBoard
+        },
+        modifyBlocks(){
+            let result = JSON.parse(JSON.stringify(this.$store.getters.tianBoard.blocks))
+            switch (this.$store.getters.boardType) {
+                case BoardType.TenYearsBoard: {
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.tenYearsBoard.blocks)))
+                    break
+                }
+                case BoardType.YearBoard: {
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.yearBoard.blocks)))
+                    break
+                }
+                case BoardType.MonthBoard: {
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.yearBoard.blocks)))
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.monthBoard.blocks)))
+                    break
+                }
+                case BoardType.DateBoard: {
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.yearBoard.blocks)))
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.monthBoard.blocks)))
+                    this.mergeBoard(result, JSON.parse(JSON.stringify(this.$store.getters.dateBoard.blocks)))
+                    break
+                }
+            }
+            this.blocks = result
+        }
+    }
 }
 </script>

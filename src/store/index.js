@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import BoardType from '@/enum/boardType'
 
 Vue.use(Vuex)
 
@@ -23,6 +22,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    modifyBoardType(state, payload) {
+      state.currentUser.boardType = payload.boardType
+    },
     modifyGender(state, gender) {
       state.currentUser.gender = gender
     },
@@ -42,20 +44,19 @@ export default new Vuex.Store({
       state.currentUser.monthBoard = payload
     },
     modifyDateBoard(state, payload) {
-      state.currentUser.monthBoard = payload
+      state.currentUser.dateBoard = payload
     },
     modifyTenYearsBoard(state, payload) {
       state.currentUser.tenYearsBoard = payload
     },
-    modifyBoard(state, payload) {
-      state.currentUser.board = payload.board
-      state.currentUser.boardType = payload.boardType
-    },
   },
   actions: {
-    setBoardInfo(state, payload) {
-      state.commit('modifyGender', payload.gender)
-      state.commit('modifyBirthday', payload)
+    setBoardType(state, payload) {
+      return state.commit('modifyBoardType', {
+        boardType: payload.boardType
+      })
+    },
+    setTianBoard(state, payload) {
       return Vue.axios.get('board', {params: {
         gender: payload.gender,
         birthYear: payload.birthYear,
@@ -65,19 +66,9 @@ export default new Vuex.Store({
         timezone: (new Date()).getTimezoneOffset(),
       }}).then((resp)=>{
         state.commit('modifyTianBoard', resp.data)
-        state.commit('modifyBoard', {
-          board: resp.data,
-          boardType: BoardType.TianBoard,
-      })
       }).catch((err) => {
         console.log(err)
         state.error = err
-      })
-    },
-    setTianBoard(state) {
-      state.commit('modifyBoard', {
-        board: this.getters.tianBoard,
-        boardType: BoardType.TianBoard,
       })
     }, 
     setYearBoard(state, payload) {
@@ -87,14 +78,11 @@ export default new Vuex.Store({
         birthMonth: payload.birthMonth,
         birthDate: payload.birthDate,
         birthHour: payload.birthHour,
+        targetYear: payload.targetYear,
         timezone: (new Date()).getTimezoneOffset(),
         index: payload.index -1,
       }}).then((resp)=>{
         state.commit('modifyYearBoard', resp.data)
-        state.commit('modifyBoard', {
-          board: resp.data,
-          boardType: BoardType.YearBoard,
-      })
       }).catch((err) => {
         console.log(err)
         state.error = err
@@ -107,14 +95,13 @@ export default new Vuex.Store({
         birthMonth: payload.birthMonth,
         birthDate: payload.birthDate,
         birthHour: payload.birthHour,
+        targetYear: payload.targetYear,
+        targetMonth: payload.targetMonth,
+        targetDate: payload.targetDate,
         timezone: (new Date()).getTimezoneOffset(),
         index: payload.index -1,
       }}).then((resp)=>{
         state.commit('modifyDateBoard', resp.data)
-        state.commit('modifyBoard', {
-          board: resp.data,
-          boardType: BoardType.DateBoard,
-      })
       }).catch((err) => {
         console.log(err)
         state.error = err
@@ -127,14 +114,12 @@ export default new Vuex.Store({
         birthMonth: payload.birthMonth,
         birthDate: payload.birthDate,
         birthHour: payload.birthHour,
+        targetYear: payload.targetYear,
+        targetMonth: payload.targetMonth,
         timezone: (new Date()).getTimezoneOffset(),
         index: payload.index -1,
       }}).then((resp)=>{
         state.commit('modifyMonthBoard', resp.data)
-        state.commit('modifyBoard', {
-          board: resp.data,
-          boardType: BoardType.MonthBoard,
-      })
       }).catch((err) => {
         console.log(err)
         state.error = err
@@ -151,27 +136,47 @@ export default new Vuex.Store({
           index: payload.index -1,
         }}).then((resp)=>{
           state.commit('modifyTenYearsBoard', resp.data)
-          state.commit('modifyBoard', {
-            board: resp.data,
-            boardType: BoardType.TenYearsBoard,
-        })
         }).catch((err) => {
           console.log(err)
           state.error = err
         })
     },
+    async setBoardInfo(state, payload) {
+      let dateNow = new Date
+      payload.targetYear = dateNow.getFullYear()
+      payload.targetMonth = dateNow.getMonth() + 1
+      payload.targetDate = dateNow.getDate()
+      payload.index = 0
+      await state.commit('modifyGender', payload.gender)
+      await state.commit('modifyBirthday', payload)
+      await state.dispatch('setTianBoard', payload)
+      await state.dispatch('setYearBoard', payload)
+      await state.dispatch('setDateBoard', payload)
+      await state.dispatch('setMonthBoard', payload)
+      await state.dispatch('setTenYearsBoard', payload)
+      return 
+    },
   },
   modules: {
   },
   getters: {
-    boardType: state=>{
+    boardType: state => {
       return state.currentUser.boardType
     },
-    tianBoard: state=>{
+    tianBoard: state => {
       return state.currentUser.tianBoard
     },
-    yearBoard: state=>{
+    yearBoard: state => {
       return state.currentUser.yearBoard
+    },
+    monthBoard: state => {
+      return state.currentUser.monthBoard
+    },
+    tenYearsBoard: state => {
+      return state.currentUser.tenYearsBoard
+    },
+    dateBoard: state => {
+      return state.currentUser.dateBoard
     },
     gender: state => {
       return state.currentUser.gender
@@ -182,10 +187,8 @@ export default new Vuex.Store({
         birthMonth: state.currentUser.birthMonth,
         birthDate: state.currentUser.birthDate,
         birthHour: state.currentUser.birthHour,
+        date: new Date(state.currentUser.birthYear, state.currentUser.birthMonth - 1, state.currentUser.birthDate, state.currentUser.birthHour),
       }
     },
-    board: state => {
-      return state.currentUser.board
-    }
   }
 })

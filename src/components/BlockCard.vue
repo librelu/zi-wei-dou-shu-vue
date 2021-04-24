@@ -252,12 +252,12 @@
 }
 .stars-row{
     min-width: 120px;
-    height: 105px;
+    height: 128px;
     display:flex;
 }
 @media screen and (min-width: 800px) {
     .stars-row{
-        height: 105px;
+        height: 128px;
         display:flex;
         padding: 5px;
     }
