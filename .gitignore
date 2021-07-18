@@ -24,3 +24,5 @@ pnpm-debug.log*
 .env
 .env.production
 .env.production
+.env.development
+.env.develogment.local
